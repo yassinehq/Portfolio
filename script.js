@@ -1,4 +1,4 @@
-        // Dark mode toggle
+// Dark mode toggle
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
         const iconElement = themeToggle.querySelector('i');
@@ -147,3 +147,54 @@
             section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(section);
         });
+
+// ===== Carrousel de projets =====
+(function () {
+    const track = document.getElementById('projectsTrack');
+    if (!track) return;
+
+    const slides = Array.from(track.querySelectorAll('.project-slide'));
+    const dotsContainer = document.getElementById('carouselDots');
+    const prevBtn = document.getElementById('prevProject');
+    const nextBtn = document.getElementById('nextProject');
+    let current = 0;
+
+    // Générer les points de navigation
+    slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+    });
+    const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
+
+    function goTo(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // Modal du projet de stage (pas de lien public)
+    const stageCard = document.getElementById('stageProjectCard');
+    const stageModal = document.getElementById('stageModalOverlay');
+    const closeStageModal = document.getElementById('closeStageModal');
+
+    if (stageCard && stageModal) {
+        stageCard.addEventListener('click', () => {
+            stageModal.classList.add('open');
+        });
+        closeStageModal.addEventListener('click', () => {
+            stageModal.classList.remove('open');
+        });
+        stageModal.addEventListener('click', (e) => {
+            if (e.target === stageModal) {
+                stageModal.classList.remove('open');
+            }
+        });
+    }
+})();
