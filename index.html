@@ -221,53 +221,96 @@ et à la visualisation de données.
     <section id="projects" class="projects-section">
         <h2 class="section-title" style="font-size: 3rem; text-align: center; margin-bottom: 50px;">Mes Projets</h2>
         
-        <div class="projects-grid">
-            <a href="https://yassinehq.github.io/calculator/" target="_blank">
-                <div class="project-card">
-                    <div class="project-img" style="background-image: url('calculatrice.png'); background-color: #333;"></div>
-                    <h3>Calculatrice</h3>
-                    <p style="font-size: 0.9rem; margin: 10px 0;">Application interactive développée en JS pur.</p>
-                    <div class="badge-container">
-                        <span class="badge">HTML</span>
-                        <span class="badge">CSS</span>
-                        <span class="badge">JS</span>
-                        <span class="badge">Git</span>
-                        <span class="badge">Github</span>
-                    </div>
-                </div>
-            </a>
-            
+        <div class="projects-carousel">
+            <button class="carousel-arrow carousel-arrow-left" id="prevProject" aria-label="Projet précédent">
+                <i class="fas fa-chevron-left"></i>
+            </button>
 
-            <a href="https://yaseen.azurewebsites.net/" target="_blank">
-                <div class="project-card">
-                    <div class="project-img" style="background-image: url('Portfolio.png'); background-color: #333;"></div>
-                    <h3>Mon Portfolio</h3>
-                    <p style="font-size: 0.9rem; margin: 10px 0;">Site web personnel présentant mon parcours.</p>
-                    <div class="badge-container">
-                        <span class="badge">HTML</span>
-                        <span class="badge">CSS</span>
-                        <span class="badge">JS</span>
-                        <span class="badge">Git</span>
-                        <span class="badge">Azure</span>
-                        <span class="badge">Azure DevOps</span>
+            <div class="projects-track" id="projectsTrack">
+                <a href="https://yassinehq.github.io/calculator/" target="_blank" class="project-slide active">
+                    <div class="project-card">
+                        <div class="project-img" style="background-image: url('calculatrice.png'); background-color: #333;"></div>
+                        <h3>Calculatrice</h3>
+                        <p style="font-size: 0.9rem; margin: 10px 0;">Application interactive développée en JS pur.</p>
+                        <div class="badge-container">
+                            <span class="badge">HTML</span>
+                            <span class="badge">CSS</span>
+                            <span class="badge">JS</span>
+                            <span class="badge">Git</span>
+                            <span class="badge">Github</span>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <div class="project-card">
-                <div class="project-img" style="background-color: #2d3e50; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-school" style="font-size: 3rem; color: #fff;"></i>
-                </div>
-                <h3>Gestion Interne - Très Union</h3>
-                <p style="font-size: 0.9rem; margin: 10px 0;">Site de gestion interne développé en stage pour un organisme éducatif : fiches élèves, exports Word de feuilles de présence, gestion des sessions/intervenants et migration de données depuis Access.</p>
-                <div class="badge-container">
-                    <span class="badge">PHP</span>
-                    <span class="badge">MySQL</span>
-                    <span class="badge">Docker</span>
+                <a href="https://yaseen.azurewebsites.net/" target="_blank" class="project-slide">
+                    <div class="project-card">
+                        <div class="project-img" style="background-image: url('Portfolio.png'); background-color: #333;"></div>
+                        <h3>Mon Portfolio</h3>
+                        <p style="font-size: 0.9rem; margin: 10px 0;">Site web personnel présentant mon parcours.</p>
+                        <div class="badge-container">
+                            <span class="badge">HTML</span>
+                            <span class="badge">CSS</span>
+                            <span class="badge">JS</span>
+                            <span class="badge">Git</span>
+                            <span class="badge">Azure</span>
+                            <span class="badge">Azure DevOps</span>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="project-slide" id="stageProjectSlide">
+                    <div class="project-card" id="stageProjectCard" style="cursor: pointer;">
+                        <div class="project-img" style="background-color: #2d3e50; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-school" style="font-size: 3rem; color: #fff;"></i>
+                        </div>
+                        <h3>Gestion Interne - Très Union</h3>
+                        <p style="font-size: 0.9rem; margin: 10px 0;">Site de gestion interne développé en stage pour un organisme éducatif : fiches élèves, exports Word de feuilles de présence, gestion des sessions/intervenants et migration de données depuis Access.</p>
+                        <div class="badge-container">
+                            <span class="badge">PHP</span>
+                            <span class="badge">MySQL</span>
+                            <span class="badge">Docker</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <button class="carousel-arrow carousel-arrow-right" id="nextProject" aria-label="Projet suivant">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
+
+        <div class="carousel-dots" id="carouselDots"></div>
     </section>
+
+    <div class="project-modal-overlay" id="stageModalOverlay">
+        <div class="project-modal">
+            <button class="project-modal-close" id="closeStageModal" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="project-modal-header">
+                <i class="fas fa-school" style="font-size: 2.5rem;"></i>
+                <h2>Gestion Interne - Très Union</h2>
+            </div>
+            <p class="project-modal-note">
+                <i class="fas fa-lock"></i> Ce site a été développé dans un cadre professionnel (stage) et n'est pas accessible publiquement.
+            </p>
+            <p>
+                Application interne développée pour un organisme éducatif afin de digitaliser sa gestion administrative :
+            </p>
+            <ul class="project-modal-list">
+                <li>Fiches élèves consultables et modifiables via des modals dynamiques</li>
+                <li>Génération automatique de feuilles de présence exportées en Word, avec regroupement dynamique par classe</li>
+                <li>Gestion des sessions de formation et des intervenants</li>
+                <li>Export des déclarations d'heures des intervenants</li>
+                <li>Migration des données existantes depuis des bases Access vers MySQL</li>
+            </ul>
+            <div class="badge-container">
+                <span class="badge">PHP</span>
+                <span class="badge">MySQL</span>
+                <span class="badge">Docker</span>
+            </div>
+        </div>
+    </div>
 
     <footer id="contact">
         <div class="contact-box">
