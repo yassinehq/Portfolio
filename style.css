@@ -1,4 +1,4 @@
-        /* --- VARIABLES & RESET --- */
+/* --- VARIABLES & RESET --- */
         :root {
             --bg-green: #213a2f;
             --bg-cream: #f4f0e6;
@@ -386,12 +386,153 @@
             transition: background-color 0.3s ease;
         }
         
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        .projects-carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .projects-track {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 420px;
+        }
+
+        .project-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            display: block;
+            opacity: 0;
+            transform: translateX(30px);
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .project-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .carousel-arrow {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--bg-green);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        [data-theme="dark"] .carousel-arrow {
+            background: #2a2a2a;
+            border-color: #444;
+            color: white;
+        }
+
+        .carousel-arrow:hover {
+            background: var(--accent-orange);
+            color: var(--bg-green);
+            border-color: var(--accent-orange);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .carousel-dot.active {
+            background: var(--accent-orange);
+        }
+
+        .project-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-modal-overlay.open {
+            display: flex;
+        }
+
+        .project-modal {
+            background: var(--bg-cream);
+            max-width: 520px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 35px;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+
+        [data-theme="dark"] .project-modal {
+            background: #1a1a1a;
+            border-color: #444;
+        }
+
+        .project-modal-close {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .project-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: var(--accent-orange);
+        }
+
+        .project-modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--bg-green);
+        }
+
+        [data-theme="dark"] .project-modal-header h2 {
+            color: white;
+        }
+
+        .project-modal-note {
+            font-size: 0.85rem;
+            font-style: italic;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .project-modal-list {
+            margin: 10px 0 20px 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
         .project-card {
