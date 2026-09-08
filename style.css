@@ -1,4 +1,4 @@
-/* --- VARIABLES & RESET --- */
+        /* --- VARIABLES & RESET --- */
         :root {
             --bg-green: #213a2f;
             --bg-cream: #f4f0e6;
@@ -533,6 +533,25 @@
             margin: 10px 0 20px 20px;
             font-size: 0.9rem;
             line-height: 1.6;
+        }
+
+        .project-modal-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0 20px;
+        }
+
+        .project-modal-gallery img {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: zoom-in;
+            display: block;
+        }
+
+        [data-theme="dark"] .project-modal-gallery img {
+            border-color: #444;
         }
 
         .project-card {

@@ -1,4 +1,4 @@
-// Dark mode toggle
+        // Dark mode toggle
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
         const iconElement = themeToggle.querySelector('i');
