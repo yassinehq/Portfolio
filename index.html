@@ -260,15 +260,26 @@ et à la visualisation de données.
 
                 <div class="project-slide" id="stageProjectSlide">
                     <div class="project-card" id="stageProjectCard" style="cursor: pointer;">
-                        <div class="project-img" style="background-color: #2d3e50; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-school" style="font-size: 3rem; color: #fff;"></i>
-                        </div>
+                        <div class="project-img" style="background-image: url('img/stage-seances.png'); background-color: #2d3e50;"></div>
                         <h3>Gestion Interne - Très Union</h3>
                         <p style="font-size: 0.9rem; margin: 10px 0;">Site de gestion interne développé en stage pour un organisme éducatif : fiches élèves, exports Word de feuilles de présence, gestion des sessions/intervenants et migration de données depuis Access.</p>
                         <div class="badge-container">
                             <span class="badge">PHP</span>
                             <span class="badge">MySQL</span>
                             <span class="badge">Docker</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-slide" id="ferrariProjectSlide">
+                    <div class="project-card" id="ferrariProjectCard" style="cursor: pointer;">
+                        <div class="project-img" style="background-image: url('img/ferrari-1.png'); background-color: #1a0000;"></div>
+                        <h3>Ferrari — Executive Performance</h3>
+                        <p style="font-size: 0.9rem; margin: 10px 0;">Dashboard Power BI portfolio analysant les performances financières, commerciales et géographiques de Ferrari (2023-2025).</p>
+                        <div class="badge-container">
+                            <span class="badge">Power BI</span>
+                            <span class="badge">DAX</span>
+                            <span class="badge">Excel</span>
                         </div>
                     </div>
                 </div>
@@ -282,6 +293,40 @@ et à la visualisation de données.
         <div class="carousel-dots" id="carouselDots"></div>
     </section>
 
+    <div class="project-modal-overlay" id="ferrariModalOverlay">
+        <div class="project-modal">
+            <button class="project-modal-close" id="closeFerrariModal" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="project-modal-header">
+                <i class="fas fa-chart-line" style="font-size: 2.5rem;"></i>
+                <h2>Ferrari — Executive Performance</h2>
+            </div>
+            <p class="project-modal-note">
+                <i class="fas fa-info-circle"></i> Dashboard réalisé dans le cadre de mon portfolio Data Analyst, à partir de données financières et commerciales de Ferrari.
+            </p>
+            <div class="project-modal-gallery">
+                <img src="img/ferrari-1.png" alt="Vue d'ensemble - Executive Performance" onclick="window.open(this.src, '_blank')">
+                <img src="img/ferrari-2.png" alt="Ventes & géographie" onclick="window.open(this.src, '_blank')">
+                <img src="img/ferrari-3.png" alt="Performance financière" onclick="window.open(this.src, '_blank')">
+            </div>
+            <p>
+                Analyse de la performance financière et commerciale de Ferrari sur 2023-2025 :
+            </p>
+            <ul class="project-modal-list">
+                <li>Vue d'ensemble exécutive : chiffre d'affaires, bénéfice net, FCF, EBITDA, EBIT, expéditions</li>
+                <li>Analyse des ventes par zone géographique (EMEA, Amériques, Chine/HK/Taïwan, reste APAC)</li>
+                <li>Suivi de la performance financière : croissance du CA, marges opérationnelles, génération de cash</li>
+                <li>Mesures DAX pour le calcul des marges, variations et valeur par véhicule</li>
+            </ul>
+            <div class="badge-container">
+                <span class="badge">Power BI</span>
+                <span class="badge">DAX</span>
+                <span class="badge">Excel</span>
+            </div>
+        </div>
+    </div>
+
     <div class="project-modal-overlay" id="stageModalOverlay">
         <div class="project-modal">
             <button class="project-modal-close" id="closeStageModal" aria-label="Fermer">
@@ -292,8 +337,13 @@ et à la visualisation de données.
                 <h2>Gestion Interne - Très Union</h2>
             </div>
             <p class="project-modal-note">
-                <i class="fas fa-lock"></i> Ce site a été développé dans un cadre professionnel (stage) et n'est pas accessible publiquement.
+                <i class="fas fa-lock"></i> Ce site a été développé dans un cadre professionnel (stage) et n'est pas accessible publiquement. Les données personnelles visibles sur les captures ont été floutées.
             </p>
+            <div class="project-modal-gallery">
+                <img src="img/stage-seances.png" alt="Gestion des séances" onclick="window.open(this.src, '_blank')">
+                <img src="img/stage-eleves.png" alt="Liste des élèves (floutée)" onclick="window.open(this.src, '_blank')">
+                <img src="img/stage-intervenants.png" alt="Gestion des intervenants" onclick="window.open(this.src, '_blank')">
+            </div>
             <p>
                 Application interne développée pour un organisme éducatif afin de digitaliser sa gestion administrative :
             </p>
