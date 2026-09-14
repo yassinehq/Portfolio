@@ -1,4 +1,4 @@
-        // Dark mode toggle
+// Dark mode toggle
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
         const iconElement = themeToggle.querySelector('i');
@@ -194,25 +194,6 @@
         stageModal.addEventListener('click', (e) => {
             if (e.target === stageModal) {
                 stageModal.classList.remove('open');
-            }
-        });
-    }
-
-    // Modal du projet Ferrari
-    const ferrariCard = document.getElementById('ferrariProjectCard');
-    const ferrariModal = document.getElementById('ferrariModalOverlay');
-    const closeFerrariModal = document.getElementById('closeFerrariModal');
-
-    if (ferrariCard && ferrariModal) {
-        ferrariCard.addEventListener('click', () => {
-            ferrariModal.classList.add('open');
-        });
-        closeFerrariModal.addEventListener('click', () => {
-            ferrariModal.classList.remove('open');
-        });
-        ferrariModal.addEventListener('click', (e) => {
-            if (e.target === ferrariModal) {
-                ferrariModal.classList.remove('open');
             }
         });
     }
