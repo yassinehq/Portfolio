@@ -551,6 +551,26 @@
             line-height: 1.5;
         }
 
+        .wakelet-embed {
+            margin-top: 12px;
+            width: 100%;
+            height: 450px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .wakelet-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        [data-theme="dark"] .wakelet-embed {
+            border-color: #444;
+        }
+
         .project-modal-source a {
             color: var(--accent-orange);
             text-decoration: underline;
