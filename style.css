@@ -1,4 +1,4 @@
-        /* --- VARIABLES & RESET --- */
+/* --- VARIABLES & RESET --- */
         :root {
             --bg-green: #213a2f;
             --bg-cream: #f4f0e6;
@@ -540,6 +540,20 @@
             flex-direction: column;
             gap: 10px;
             margin: 15px 0 20px;
+        }
+
+        .project-modal-source {
+            font-size: 0.82rem;
+            padding: 10px 12px;
+            margin: 0 0 20px;
+            border-left: 3px solid var(--accent-orange);
+            background: rgba(252, 163, 17, 0.08);
+            line-height: 1.5;
+        }
+
+        .project-modal-source a {
+            color: var(--accent-orange);
+            text-decoration: underline;
         }
 
         .project-modal-gallery img {
