@@ -96,7 +96,7 @@
         setInterval(changeGreeting, 4000);
 
         // Gestion des images décoratives
-        const poses = ["Pose 1.png", "Pose 2.png", "Pose 4.png", "Pose 5.png"];
+        const poses = ["Pose 1.png", "Pose 3.png", "Pose 4.png", "Pose 5.png"];
         const container = document.getElementById("worldImages");
         const pageHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
         const shuffledPoses = [...poses].sort(() => Math.random() - 0.5);
