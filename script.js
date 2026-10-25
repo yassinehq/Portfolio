@@ -217,4 +217,23 @@
             }
         });
     }
+
+    // Modal du projet F1 Data Pipeline
+    const f1Card = document.getElementById('f1ProjectCard');
+    const f1Modal = document.getElementById('f1ModalOverlay');
+    const closeF1Modal = document.getElementById('closeF1Modal');
+
+    if (f1Card && f1Modal) {
+        f1Card.addEventListener('click', () => {
+            f1Modal.classList.add('open');
+        });
+        closeF1Modal.addEventListener('click', () => {
+            f1Modal.classList.remove('open');
+        });
+        f1Modal.addEventListener('click', (e) => {
+            if (e.target === f1Modal) {
+                f1Modal.classList.remove('open');
+            }
+        });
+    }
 })();

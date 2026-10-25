@@ -299,6 +299,21 @@ et à la visualisation de données.
                         </div>
                     </div>
                 </div>
+
+                <div class="project-slide" id="f1ProjectSlide">
+                    <div class="project-card" id="f1ProjectCard" style="cursor: pointer;">
+                        <div class="project-img" style="background-image: url('img/f1-pipeline.png'); background-color: #15151e;"></div>
+                        <h3>F1 Data Pipeline</h3>
+                        <p style="font-size: 0.9rem; margin: 10px 0;">Pipeline automatisé qui collecte et structure les données de chaque Grand Prix de F1, puis les expose dans un dashboard en ligne mis à jour chaque semaine.</p>
+                        <div class="badge-container">
+                            <span class="badge">Python</span>
+                            <span class="badge">SQL</span>
+                            <span class="badge">DuckDB</span>
+                            <span class="badge">Streamlit</span>
+                            <span class="badge">GitHub Actions</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <button class="carousel-arrow carousel-arrow-right" id="nextProject" aria-label="Projet suivant">
@@ -344,6 +359,46 @@ et à la visualisation de données.
                 <span class="badge">Power BI</span>
                 <span class="badge">DAX</span>
                 <span class="badge">Excel</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-modal-overlay" id="f1ModalOverlay">
+        <div class="project-modal">
+            <button class="project-modal-close" id="closeF1Modal" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="project-modal-header">
+                <i class="fas fa-flag-checkered" style="font-size: 2.5rem;"></i>
+                <h2>F1 Data Pipeline</h2>
+            </div>
+            <p class="project-modal-note">
+                <i class="fas fa-info-circle"></i> Projet data engineering de bout en bout : de la collecte automatique des données jusqu'au dashboard en ligne.
+            </p>
+            <div class="project-modal-gallery">
+                <img src="img/f1-pipeline.png" alt="Dashboard F1 Data Pipeline" onclick="window.open(this.src, '_blank')">
+            </div>
+            <p>
+                Chaque lundi, le pipeline récupère et traite les données du dernier Grand Prix :
+            </p>
+            <ul class="project-modal-list">
+                <li>Collecte via l'API FastF1 : résultats, chaque tour de chaque pilote, pneus et arrêts aux stands</li>
+                <li>Nettoyage : détection des tours faussés (stands, Safety Car, VSC) et reconstruction des relais de pneus</li>
+                <li>Stockage DuckDB avec chargement incrémental et idempotent (jamais de doublon)</li>
+                <li>Contrôles qualité testés avec pytest et automatisation complète via GitHub Actions</li>
+                <li>Dashboard Streamlit : classement cumulé, rythme de course, stratégies pneus, duel entre pilotes</li>
+            </ul>
+            <p class="project-modal-source">
+                <a href="https://yaseen-f1-data.streamlit.app" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Voir la démo live</a>
+                &nbsp;·&nbsp;
+                <a href="https://github.com/yassinehq/f1-data-pipeline" target="_blank" rel="noopener"><i class="fab fa-github"></i> Voir le code</a>
+            </p>
+            <div class="badge-container">
+                <span class="badge">Python</span>
+                <span class="badge">SQL</span>
+                <span class="badge">DuckDB</span>
+                <span class="badge">Streamlit</span>
+                <span class="badge">GitHub Actions</span>
             </div>
         </div>
     </div>
