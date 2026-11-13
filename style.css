@@ -91,14 +91,14 @@ a { color: inherit; }
 .hero {
     min-height: 100svh;
     display: grid;
-    grid-template-columns: minmax(18rem, 5fr) minmax(0, 8fr);
+    grid-template-columns: minmax(18rem, 4fr) minmax(0, 9fr);
     align-items: center;
-    gap: clamp(1rem, 3vw, 3rem);
-    padding: 6rem var(--pad) 3rem;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    padding: 5.5rem var(--pad) 2rem;
 }
 .hero-id { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.4rem; }
 .hero-portrait {
-    flex: none; width: clamp(5.5rem, 9vw, 8.5rem); aspect-ratio: 1;
+    flex: none; width: clamp(6rem, 11vw, 11rem); aspect-ratio: 1;
     border-radius: 50%; overflow: hidden;
     border: 2px solid rgba(236, 235, 247, .35);
     box-shadow: 0 0 0 6px rgba(147, 166, 255, .14), 0 18px 40px -18px rgba(0, 0, 0, .7);
@@ -117,7 +117,7 @@ a { color: inherit; }
 .hero-badge:hover { background: var(--data); color: var(--bg); }
 .hero h1 {
     font-family: var(--serif); font-weight: 400;
-    font-size: clamp(2.6rem, 4.6vw, 4.9rem);
+    font-size: clamp(2.5rem, 4vw, 4.6rem);
     line-height: 1; letter-spacing: -.03em;
     margin-bottom: 1.4rem;
 }
@@ -133,9 +133,9 @@ a { color: inherit; }
 
 /* ---------- Réseau 3D ---------- */
 .brain {
-    display: flex; flex-direction: column; gap: .8rem;
-    height: min(84vh, 760px);
-    min-height: 34rem;
+    display: flex; flex-direction: column; gap: .6rem;
+    height: min(90vh, 900px);
+    min-height: 36rem;
     user-select: none;
 }
 .stage {
@@ -194,24 +194,28 @@ a { color: inherit; }
 .legend [data-g="dev"]::before { background: var(--dev); }
 .legend [data-g="tool"]::before { background: var(--tool); }
 
+/* fiche compacte : hauteur fixe pour que la scène ne saute pas, disposition en 2 colonnes sur desktop */
 .info {
-    min-height: 12.2rem;
-    max-width: 36rem;
+    height: 7.4rem;
+    max-width: 44rem;
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: .2rem 1.6rem; align-content: start;
     background: rgba(25, 29, 74, .86);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: .9rem 1.1rem;
-    font-size: .92rem;
+    padding: .8rem 1.1rem;
+    font-size: .9rem;
     backdrop-filter: blur(6px);
+    overflow: hidden;
 }
-.info-hint { color: var(--soft); }
-.info h3 { font-family: var(--serif); font-weight: 500; font-size: 1.3rem; margin-bottom: .3rem; }
-.info .bars { display: grid; grid-template-columns: auto 1fr; gap: .25rem .8rem; align-items: center; margin: .5rem 0 .6rem; font-size: .85rem; color: var(--soft); }
+.info:has(.info-hint) { background: transparent; border-color: transparent; backdrop-filter: none; grid-template-columns: 1fr; }
+.info-hint { color: var(--soft); max-width: 52ch; }
+.info h3 { font-family: var(--serif); font-weight: 500; font-size: 1.25rem; line-height: 1.1; grid-column: 1; }
+.info .bars { grid-column: 2; grid-row: 1 / span 3; display: grid; grid-template-columns: auto 1fr; gap: .3rem .7rem; align-items: center; align-self: center; font-size: .8rem; color: var(--soft); }
 .info .bar { height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
 .info .bar span { display: block; height: 100%; background: var(--goal); border-radius: 4px; transition: width .5s var(--ease); }
-.info .used { color: var(--soft); }
+.info .used { grid-column: 1; color: var(--soft); font-size: .86rem; line-height: 1.4; }
 .info .used strong { color: var(--text); font-weight: 500; }
-.info .pill { margin-top: .7rem; }
+.info .pill { grid-column: 1; justify-self: start; margin-top: .35rem; padding: .35rem .9rem; font-size: .84rem; }
 
 /* ---------- Sections ---------- */
 section:not(.hero) { padding: clamp(5rem, 13vh, 9rem) var(--pad); }
@@ -353,7 +357,9 @@ summary { cursor: pointer; width: fit-content; }
 @media (max-width: 980px) {
     .hero { grid-template-columns: 1fr; padding-top: 5.5rem; }
     .brain { height: auto; min-height: 0; }
-    .stage { height: 30rem; flex: none; }
+    .stage { height: 32rem; flex: none; }
+    .info { height: auto; min-height: 7.4rem; grid-template-columns: 1fr; }
+    .info .bars { grid-column: 1; grid-row: auto; margin: .4rem 0; }
     .section-head { grid-template-columns: 1fr; }
     .project-row button { grid-template-columns: 1fr; gap: .5rem; }
     .p-kind { text-align: left; }
