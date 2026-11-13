@@ -343,8 +343,13 @@ summary { cursor: pointer; width: fit-content; }
 }
 @media (max-width: 560px) {
     .top nav a:nth-child(3) { display: none; }
+    .hero { padding-top: 5rem; }
+    .hero h1 { font-size: 2.5rem; }
+    .stage { height: 34rem; }   /* plus haut : les 14 étiquettes ne se chevauchent pas */
     .lbl { font-size: .74rem; padding: .3rem .55rem; }
-    .lbl.out.main { font-size: 1.15rem; }
+    .lbl.out { font-size: .8rem; padding: .35rem .6rem; }
+    .lbl.out.main { font-size: 1.1rem; padding: .4rem .75rem; }
+    .lbl.out small { font-size: .65rem; margin-top: .2rem; }
     .legend { font-size: .72rem; }
     .info { font-size: .85rem; padding: .7rem .9rem; }
     .skills dl { grid-template-columns: 1fr; gap: .2rem; }

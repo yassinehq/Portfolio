@@ -310,11 +310,19 @@ const brain = (() => {
         b.addEventListener('click', () => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }));
     });
 
+    /* ---- État de la boucle de rendu (déclaré tôt : resize() et setActive() réveillent la boucle) ---- */
+    let visible = true, last = performance.now(), spawnT = 0, running = false, awakeUntil = 0;
+    function wake(ms = 1200) {
+        awakeUntil = performance.now() + ms;
+        if (visible && !running) { running = true; last = performance.now(); requestAnimationFrame(loop); }
+    }
+
     /* ---- Sélection d'une compétence ---- */
     let active = null, locked = false, activePath = new Set();
     function setActive(n, lock = false) {
         if (n === active && !lock) return;
         active = n; locked = lock && !!n;
+        wake();
         activePath = n ? pathOf(n) : new Set();
         inputs.forEach(m => {
             m.el.classList.toggle('on', m === n);
@@ -367,6 +375,7 @@ const brain = (() => {
     canvas.addEventListener('pointerdown', e => {
         drag = { x: e.clientX, y: e.clientY, rx: rot.tx, ry: rot.ty, id: e.pointerId };
         moved = false;
+        wake();
     });
     addEventListener('pointermove', e => {
         if (drag && e.pointerId === drag.id) {
@@ -393,6 +402,7 @@ const brain = (() => {
         }
         drag = null;
         brainEl.classList.remove('dragging');
+        wake(2500); // le réseau finit sa rotation en douceur
     });
 
     /* ---- Mise en page : le réseau remplit la scène, étiquettes comprises ---- */
@@ -412,7 +422,7 @@ const brain = (() => {
         const r = box.getBoundingClientRect();
         W = Math.max(1, r.width); H = Math.max(1, r.height);
         narrow = W < 640;
-        const PR = Math.min(devicePixelRatio || 1, 2);
+        const PR = Math.min(devicePixelRatio || 1, 1.5);   // plafonné : fluide sans GPU dédié
         renderer?.setPixelRatio(PR);
         renderer?.setSize(W, H, false);
         uniforms.uPR.value = PR;
@@ -433,22 +443,31 @@ const brain = (() => {
         camera.position.set(X0 - L / ppuReal + (dist * fovK() * camera.aspect) / 2, 0, dist);
         uniforms.uScale.value = Math.min(1.25, Math.max(0.7, ppuReal / 34));
         camera.updateProjectionMatrix();
+        wake();
     }
     new ResizeObserver(resize).observe(box);
     document.fonts?.ready.then(resize);
     resize();
 
-    /* ---- Boucle (en pause quand le hero n'est pas visible) ---- */
-    let visible = true, last = performance.now(), spawnT = 0;
+    /* ---- Boucle ----
+       - en pause quand le hero n'est pas visible ;
+       - 30 fps au repos (lueurs lentes), 60 fps au survol / glisser ;
+       - avec prefers-reduced-motion : rendu uniquement pendant une interaction. ---- */
     new IntersectionObserver(([en]) => {
         visible = en.isIntersecting;
-        if (visible) { last = performance.now(); requestAnimationFrame(loop); }
+        if (visible) wake();
     }).observe(box);
+    const schedule = (now, busy) => {
+        if (busy) { requestAnimationFrame(loop); return; }
+        // repos : une image sur deux (≈ 30 fps)
+        requestAnimationFrame(() => requestAnimationFrame(loop));
+    };
 
     const dimColor = new THREE.Color(0x8d8fc4);
     function loop(now) {
-        if (!visible) return;
-        const dt = Math.min(0.05, (now - last) / 1000);
+        const busy = !!drag || !!active || now < awakeUntil;
+        if (!visible || (reduceMotion && !busy)) { running = false; return; }
+        const dt = Math.min(0.08, (now - last) / 1000);
         last = now;
         const t = now / 1000;
 
@@ -541,10 +560,10 @@ const brain = (() => {
         }
 
         renderer?.render(scene, camera);
-        requestAnimationFrame(loop);
+        schedule(now, busy);
     }
     const tmpC = new THREE.Color();
-    requestAnimationFrame(loop);
+    wake();
 
     return { setActive };
 })();
