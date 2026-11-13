@@ -135,34 +135,44 @@ const brain = (() => {
     }
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 200);
+    const BG = new THREE.Color(0x12153a);
+    scene.fog = new THREE.Fog(BG, 20, 40);           // réglé dans resize() : les nœuds lointains pâlissent
+    // perspective marquée (fov large, caméra proche) pour que la profondeur se voie
+    const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 200);
     const root = new THREE.Group();
     scene.add(root);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const key = new THREE.DirectionalLight(0xffffff, 2.2);
+    key.position.set(-4, 6, 10);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x93a6ff, 0.8);
+    rim.position.set(6, -3, -6);
+    scene.add(rim);
 
-    /* ---- Disposition : 4 couches de gauche à droite ---- */
+    /* ---- Disposition : 4 couches de gauche à droite, chacune courbée en arc
+            (le milieu de chaque couche vient vers la caméra : le réseau forme un cylindre couché) ---- */
+    const arc = (t, amp, back) => Math.cos(t * Math.PI) * amp - back;   // t ∈ [-0.5, 0.5]
     const nodes = [];
     const inputs = SKILLS.map((s, i) => {
-        const t = i / (SKILLS.length - 1) - 0.5;        // -0.5 → 0.5
-        const y = -t * 15;
-        const z = Math.cos(t * Math.PI) * 2.2 - 1.2;    // légère courbe vers l'avant
-        const n = { kind: 'in', skill: s, pos: new THREE.Vector3(-10.5 + Math.abs(t) * 1.6, y, z), color: new THREE.Color(GROUP_HEX[s.g]), size: 1.15 };
+        const t = i / (SKILLS.length - 1) - 0.5;
+        const n = { kind: 'in', skill: s, pos: new THREE.Vector3(-10.5 + Math.abs(t) * 1.2, -t * 15, arc(t, 5.2, 2.4)), color: new THREE.Color(GROUP_HEX[s.g]), size: 1.15 };
         nodes.push(n); return n;
     });
-    const hidden = (count, x, spread, seed) => Array.from({ length: count }, (_, i) => {
+    const hidden = (count, x, spread, amp, seed) => Array.from({ length: count }, (_, i) => {
         const t = count === 1 ? 0 : i / (count - 1) - 0.5;
         const n = {
             kind: 'hid',
-            pos: new THREE.Vector3(x, -t * spread, Math.sin(i * 1.7 + seed) * 2.4),
+            pos: new THREE.Vector3(x + Math.sin(i * 2.3 + seed) * 0.6, -t * spread, arc(t, amp, amp * 0.45) + Math.sin(i * 1.7 + seed) * 1.1),
             color: new THREE.Color(0xb8b9e6), size: 0.8
         };
         nodes.push(n); return n;
     });
-    const h1 = hidden(8, -3.6, 12, 0.3);
-    const h2 = hidden(6, 2.6, 9, 1.1);
+    const h1 = hidden(8, -3.6, 12, 4.2, 0.3);
+    const h2 = hidden(6, 2.6, 9, 3.4, 1.1);
     const outs = JOBS.map((j, i) => {
         // les deux métiers visés en grand, le data analyst plus bas et plus petit
-        const y = [4.2, -2.4, -7.2][i];
-        const n = { kind: 'out', job: j, pos: new THREE.Vector3(9.2, y, j.main ? 1.2 : -0.4), color: new THREE.Color(0xfff3dc), size: j.main ? 2.4 : 1.3 };
+        const y = [4.6, -1.8, -6.8][i];
+        const n = { kind: 'out', job: j, pos: new THREE.Vector3(9.2, y, j.main ? 1.6 : -1.2), color: new THREE.Color(0xfff3dc), size: j.main ? 2.4 : 1.3 };
         nodes.push(n); return n;
     });
 
@@ -189,7 +199,9 @@ const brain = (() => {
         return set;
     }
 
-    /* ---- Géométries ---- */
+    /* ---- Géométries ----
+       Les nœuds sont de vraies sphères ombrées (une seule InstancedMesh : un appel de dessin).
+       Un halo doux en points, dont la taille suit la perspective, s'allume sur le chemin actif. ---- */
     const N = nodes.length;
     const nPos = new Float32Array(N * 3), nCol = new Float32Array(N * 3), nSize = new Float32Array(N), nGlow = new Float32Array(N);
     nodes.forEach((n, i) => {
@@ -197,38 +209,52 @@ const brain = (() => {
         nSize[i] = n.size;
         n.glow = 0; n.dim = 0;
     });
+    const sphereGeo = new THREE.SphereGeometry(1, 18, 12);
+    const sphereMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    const spheres = new THREE.InstancedMesh(sphereGeo, sphereMat, N);
+    spheres.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    nodes.forEach((n, i) => spheres.setColorAt(i, n.color));
+    spheres.renderOrder = 2;
+    root.add(spheres);
+    let nodeScale = 0.16;                               // rayon (unités monde) = size × nodeScale, ajusté dans resize()
+    const m4 = new THREE.Matrix4(), q0 = new THREE.Quaternion(), v3 = new THREE.Vector3();
+
     const nGeo = new THREE.BufferGeometry();
     nGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
     nGeo.setAttribute('aColor', new THREE.BufferAttribute(nCol, 3));
     nGeo.setAttribute('aSize', new THREE.BufferAttribute(nSize, 1));
     nGeo.setAttribute('aGlow', new THREE.BufferAttribute(nGlow, 1));
-    const uniforms = { uPR: { value: 1 }, uScale: { value: 1 } };
-    const nMat = new THREE.ShaderMaterial({
+    const uniforms = { uPR: { value: 1 }, uScale: { value: 1 }, uRef: { value: 28 }, uFogNear: { value: 20 }, uFogFar: { value: 40 } };
+    const glowShader = (disc) => new THREE.ShaderMaterial({
         uniforms, transparent: true, depthWrite: false,
         vertexShader: /* glsl */`
             attribute vec3 aColor; attribute float aSize; attribute float aGlow;
-            uniform float uPR; uniform float uScale;
-            varying vec3 vColor; varying float vGlow;
+            uniform float uPR; uniform float uScale; uniform float uRef; uniform float uFogNear; uniform float uFogFar;
+            varying vec3 vColor; varying float vGlow; varying float vFog;
             void main() {
                 vColor = aColor; vGlow = aGlow;
                 vec4 mv = modelViewMatrix * vec4(position, 1.0);
-                gl_PointSize = aSize * (11.0 + aGlow * 5.0) * uPR * uScale;
+                float depth = -mv.z;
+                vFog = 1.0 - clamp((depth - uFogNear) / (uFogFar - uFogNear), 0.0, 1.0);
+                // la taille suit la perspective : plus proche = plus grand
+                gl_PointSize = aSize * (11.0 + aGlow * 6.0) * uPR * uScale * (uRef / depth);
                 gl_Position = projectionMatrix * mv;
             }`,
         fragmentShader: /* glsl */`
-            varying vec3 vColor; varying float vGlow;
+            varying vec3 vColor; varying float vGlow; varying float vFog;
             void main() {
                 float d = length(gl_PointCoord - 0.5);
                 if (d > 0.5) discard;
-                float disc = smoothstep(0.24, 0.20, d);
-                float halo = smoothstep(0.5, 0.2, d) * (0.10 + vGlow * 0.35);
-                vec3 c = mix(vColor, vec3(1.0), disc * 0.15 * vGlow);
-                gl_FragColor = vec4(c, max(disc * 0.95, halo));
+                float disc = ${disc ? 'smoothstep(0.24, 0.18, d)' : '0.0'};
+                float halo = smoothstep(0.5, 0.15, d) * (${disc ? '0.12' : '0.0'} + vGlow * 0.4);
+                vec3 c = mix(vColor, vec3(1.0), disc * 0.3);
+                gl_FragColor = vec4(c, max(disc * 0.95, halo) * (0.35 + 0.65 * vFog));
             }`
     });
-    const points = new THREE.Points(nGeo, nMat);
-    points.renderOrder = 2;
-    root.add(points);
+    const haloMat = glowShader(false), pulseMat = glowShader(true);
+    const halos = new THREE.Points(nGeo, haloMat);
+    halos.renderOrder = 1;
+    root.add(halos);
 
     const E = edges.length;
     const ePos = new Float32Array(E * 6), eCol = new Float32Array(E * 8);
@@ -247,7 +273,7 @@ const brain = (() => {
     pGeo.setAttribute('aColor', new THREE.BufferAttribute(pCol, 3));
     pGeo.setAttribute('aSize', new THREE.BufferAttribute(pSize, 1));
     pGeo.setAttribute('aGlow', new THREE.BufferAttribute(pGlow, 1));
-    const pPoints = new THREE.Points(pGeo, nMat);
+    const pPoints = new THREE.Points(pGeo, pulseMat);
     pPoints.renderOrder = 3;
     root.add(pPoints);
 
@@ -347,8 +373,16 @@ const brain = (() => {
         return best;
     }
 
-    /* ---- Rotation à la souris / au doigt ---- */
-    const rot = { x: 0, y: 0, tx: 0, ty: 0 };
+    /* ---- Rotation à la souris / au doigt, parallaxe, entrée en scène ---- */
+    const REST_Y = -0.14, REST_X = 0.05;             // orientation de repos (légèrement de trois quarts)
+    const INTRO = reduceMotion ? 0 : 0.61;            // ≈ 35° : le réseau pivote jusqu'à sa place en 1,5 s
+    const rot = { x: REST_X, y: REST_Y + INTRO, tx: 0, ty: 0 };
+    const t0 = performance.now();
+    const par = { x: 0, y: 0 };                       // parallaxe : position de la souris, de -0,5 à 0,5
+    if (finePointer) addEventListener('pointermove', e => {
+        par.x = e.clientX / innerWidth - 0.5;
+        par.y = e.clientY / innerHeight - 0.5;
+    }, { passive: true });
     let drag = null, moved = false;
     canvas.addEventListener('pointerdown', e => {
         drag = { x: e.clientX, y: e.clientY, rx: rot.tx, ry: rot.ty, id: e.pointerId };
@@ -420,6 +454,12 @@ const brain = (() => {
         const ppuReal = W / (dist * fovK() * camera.aspect);
         camera.position.set(X0 - L / ppuReal + (dist * fovK() * camera.aspect) / 2, 0, dist);
         uniforms.uScale.value = Math.min(1.25, Math.max(0.7, ppuReal / 34));
+        // sur petit écran (peu de pixels par unité), les sphères sont grossies pour rester visibles
+        nodeScale = 0.16 * clamp(34 / ppuReal, 1, 3.2);
+        // brouillard : rien devant le réseau, les nœuds du fond pâlissent
+        uniforms.uRef.value = dist;
+        uniforms.uFogNear.value = scene.fog.near = dist - 1;
+        uniforms.uFogFar.value = scene.fog.far = dist + 16;
         camera.updateProjectionMatrix();
         wake();
     }
@@ -449,10 +489,15 @@ const brain = (() => {
         last = now;
         const t = now / 1000;
 
-        // rotation : légère oscillation au repos + celle choisie par la personne
-        const sway = reduceMotion ? 0 : Math.sin(t * 0.25) * 0.12;
-        rot.y += (rot.ty + sway - 0.18 - rot.y) * Math.min(1, dt * 4);
-        rot.x += (rot.tx + 0.06 - rot.x) * Math.min(1, dt * 4);
+        // rotation : entrée en scène (35° → 0 en 1,5 s), oscillation lente ±15° au repos,
+        // parallaxe souris, et la rotation choisie au glisser
+        const k = Math.min(1, (now - t0) / 1500);
+        const intro = INTRO * (1 - (1 - Math.pow(1 - k, 3)));
+        const sway = reduceMotion ? 0 : Math.sin(t * 0.22) * 0.26;
+        const parY = finePointer ? par.x * 0.18 : 0, parX = finePointer ? par.y * 0.10 : 0;
+        const ease = Math.min(1, dt * (k < 1 ? 12 : 4));
+        rot.y += (REST_Y + intro + sway + parY + rot.ty - rot.y) * ease;
+        rot.x += (REST_X + parX + rot.tx - rot.x) * ease;
         if (!drag) { rot.ty *= Math.exp(-dt * 0.25); rot.tx *= Math.exp(-dt * 0.25); }
         root.rotation.set(rot.x, rot.y, 0);
         root.updateMatrixWorld();
@@ -492,7 +537,14 @@ const brain = (() => {
             const c = tmpC.copy(n.color);
             if (n.dim < 0) c.lerp(dimColor, -n.dim * 0.7);
             nCol[i * 3] = c.r; nCol[i * 3 + 1] = c.g; nCol[i * 3 + 2] = c.b;
+            // sphère : un peu plus grande et plus claire quand elle s'allume
+            const r = n.size * nodeScale * (1 + g * 0.3);
+            m4.compose(n.pos, q0, v3.set(r, r, r));
+            spheres.setMatrixAt(i, m4);
+            spheres.setColorAt(i, c.lerp(white, g * 0.35));
         });
+        spheres.instanceMatrix.needsUpdate = true;
+        spheres.instanceColor.needsUpdate = true;
         nGeo.attributes.aColor.needsUpdate = true;
         nGeo.attributes.aGlow.needsUpdate = true;
 
@@ -501,7 +553,7 @@ const brain = (() => {
             e.glow *= Math.exp(-dt * 2);
             const on = activePath.has(e);
             const c = on ? active.color : e.color;
-            const a = on ? 0.55 : (active ? 0.05 : 0.11) + e.glow * 0.3;
+            const a = on ? 0.6 : (active ? 0.05 : 0.15) + e.glow * 0.3;
             for (let k = 0; k < 2; k++) {
                 const o = i * 8 + k * 4;
                 eCol[o] = c.r; eCol[o + 1] = c.g; eCol[o + 2] = c.b; eCol[o + 3] = a;
@@ -532,15 +584,17 @@ const brain = (() => {
             const gap = n.kind === 'out' ? (n.job.main ? 26 : 18) : 14;
             let x, y = s.y - h / 2;
             if (n.kind === 'in') x = s.x - w - gap;
-            else if (narrow) { x = clamp(s.x - w / 2, 4, W - w - 4); y = s.y + 12; }
+            else if (narrow) { x = s.x - w / 2; y = s.y + 12; }
             else x = s.x + gap;
+            // jamais coupée par le bord de la scène
+            x = clamp(x, 2, W - w - 2); y = clamp(y, 2, H - h - 2);
             el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
         }
 
         renderer?.render(scene, camera);
         schedule(now, busy);
     }
-    const tmpC = new THREE.Color();
+    const tmpC = new THREE.Color(), white = new THREE.Color(0xffffff);
     wake();
 
     return { setActive };
