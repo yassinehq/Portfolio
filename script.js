@@ -115,26 +115,26 @@ const PROJECTS = [
       (poids = à quel point elle sert ce métier, de 0 à 1)
    --------------------------------------------------------- */
 const JOBS = [
-    { id: 'bi', label: 'BI developer', note: 'aussi visé' },
-    { id: 'da', label: 'Data analyst', note: 'mon objectif', main: true },
-    { id: 'de', label: 'Data engineer', note: 'aussi visé' }
+    { id: 'ds', label: 'Data scientist', note: 'mon objectif', main: true },
+    { id: 'de', label: 'Data engineer',  note: 'mon objectif', main: true },
+    { id: 'da', label: 'Data analyst',   note: 'aussi possible' }
 ];
-const GROUPS = { data: 'Data et BI', ml: 'Machine learning', dev: 'Développement', tool: 'Outils' };
+const GROUPS = { data: 'Data', ml: 'Machine learning', dev: 'Développement', tool: 'Outils' };
 const SKILLS = [
-    { id: 'python',  label: 'Python',         g: 'data', w: { da: 1, bi: .6, de: 1 },   p: ['f1'] },
-    { id: 'sql',     label: 'SQL',            g: 'data', w: { da: 1, bi: 1, de: 1 },    p: ['f1', 'stage'] },
-    { id: 'powerbi', label: 'Power BI',       g: 'data', w: { da: 1, bi: 1, de: .2 },   p: ['ferrari'] },
-    { id: 'dax',     label: 'DAX',            g: 'data', w: { da: .8, bi: 1, de: .1 },  p: ['ferrari'] },
-    { id: 'excel',   label: 'Excel',          g: 'data', w: { da: .9, bi: .7, de: .1 }, p: ['ferrari'] },
-    { id: 'duckdb',  label: 'DuckDB',         g: 'data', w: { da: .6, bi: .4, de: .9 }, p: ['f1'] },
-    { id: 'streamlit', label: 'Streamlit',    g: 'data', w: { da: .8, bi: .6, de: .4 }, p: ['f1'] },
-    { id: 'sklearn', label: 'scikit-learn',   g: 'ml',   w: { da: .7, bi: .2, de: .4 }, p: [], extra: "mes projets d'apprentissage (Iris, Breast Cancer, California Housing)" },
-    { id: 'php',     label: 'PHP',            g: 'dev',  w: { da: .1, bi: .3, de: .4 }, p: ['stage'] },
-    { id: 'mysql',   label: 'MySQL',          g: 'dev',  w: { da: .6, bi: .7, de: .8 }, p: ['stage'] },
-    { id: 'js',      label: 'JavaScript',     g: 'dev',  w: { da: .2, bi: .3, de: .3 }, p: ['calc', 'portfolio'] },
-    { id: 'git',     label: 'Git',            g: 'tool', w: { da: .6, bi: .6, de: .9 }, p: ['f1', 'calc'] },
-    { id: 'actions', label: 'GitHub Actions', g: 'tool', w: { da: .3, bi: .3, de: 1 },  p: ['f1'] },
-    { id: 'docker',  label: 'Docker',         g: 'tool', w: { da: .2, bi: .3, de: .9 }, p: ['stage'] }
+    { id: 'python',  label: 'Python',         g: 'data', w: { ds: 1, de: .9, da: .9 },  p: ['f1'] },
+    { id: 'sql',     label: 'SQL',            g: 'data', w: { ds: .7, de: 1, da: 1 },   p: ['f1', 'stage'] },
+    { id: 'duckdb',  label: 'DuckDB',         g: 'data', w: { ds: .5, de: 1, da: .5 },  p: ['f1'] },
+    { id: 'powerbi', label: 'Power BI',       g: 'data', w: { ds: .2, de: .2, da: 1 },  p: ['ferrari'] },
+    { id: 'dax',     label: 'DAX',            g: 'data', w: { ds: .1, de: .1, da: .9 }, p: ['ferrari'] },
+    { id: 'excel',   label: 'Excel',          g: 'data', w: { ds: .3, de: .1, da: .8 }, p: ['ferrari'] },
+    { id: 'streamlit', label: 'Streamlit',    g: 'data', w: { ds: .7, de: .4, da: .7 }, p: ['f1'] },
+    { id: 'sklearn', label: 'scikit-learn',   g: 'ml',   w: { ds: 1, de: .2, da: .5 },  p: [], extra: "mes projets d'apprentissage (Iris, Breast Cancer, California Housing)" },
+    { id: 'mysql',   label: 'MySQL',          g: 'dev',  w: { ds: .4, de: .8, da: .6 }, p: ['stage'] },
+    { id: 'php',     label: 'PHP',            g: 'dev',  w: { ds: .1, de: .4, da: .1 }, p: ['stage'] },
+    { id: 'js',      label: 'JavaScript',     g: 'dev',  w: { ds: .1, de: .3, da: .2 }, p: ['calc', 'portfolio'] },
+    { id: 'git',     label: 'Git',            g: 'tool', w: { ds: .7, de: .9, da: .5 }, p: ['f1', 'calc'] },
+    { id: 'actions', label: 'GitHub Actions', g: 'tool', w: { ds: .3, de: 1, da: .2 },  p: ['f1'] },
+    { id: 'docker',  label: 'Docker',         g: 'tool', w: { ds: .3, de: 1, da: .2 },  p: ['stage'] }
 ];
 const GROUP_HEX = { data: 0xf4b76f, ml: 0xe891bd, dev: 0x93a6ff, tool: 0x7fd3c0 };
 
@@ -182,8 +182,9 @@ const brain = (() => {
     const h1 = hidden(8, -3.6, 12, 0.3);
     const h2 = hidden(6, 2.6, 9, 1.1);
     const outs = JOBS.map((j, i) => {
-        const y = [4.6, 0, -4.6][i];
-        const n = { kind: 'out', job: j, pos: new THREE.Vector3(9.2, y, j.main ? 1.2 : 0), color: new THREE.Color(0xfff3dc), size: j.main ? 2.6 : 1.5 };
+        // les deux métiers visés en grand, le data analyst plus bas et plus petit
+        const y = [4.2, -2.4, -7.2][i];
+        const n = { kind: 'out', job: j, pos: new THREE.Vector3(9.2, y, j.main ? 1.2 : -0.4), color: new THREE.Color(0xfff3dc), size: j.main ? 2.4 : 1.3 };
         nodes.push(n); return n;
     });
 
@@ -276,8 +277,9 @@ const brain = (() => {
         if (pulses.length >= MAXP) return;
         // chemin pondéré : on choisit le métier selon le poids de la compétence
         const w = inNode.skill.w;
-        const r = Math.random() * (w.da + w.bi + w.de);
-        const target = outs[r < w.bi ? 0 : r < w.bi + w.da ? 1 : 2];
+        let r = Math.random() * JOBS.reduce((s, j) => s + w[j.id], 0);
+        let target = outs[outs.length - 1];
+        for (const o of outs) { r -= w[o.job.id]; if (r <= 0) { target = o; break; } }
         const e1 = inNode.out[Math.floor(Math.random() * inNode.out.length)];
         const e2 = e1.b.out[Math.floor(Math.random() * e1.b.out.length)];
         const e3 = e2.b.out.find(e => e.b === target);
