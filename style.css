@@ -131,21 +131,59 @@ a { color: inherit; }
 }
 .hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; }
 
-/* ---------- Réseau 3D ---------- */
-.brain {
-    display: flex; flex-direction: column; gap: .6rem;
-    height: min(90vh, 900px);
-    min-height: 36rem;
-    user-select: none;
+/* le texte du hero repose sur un voile sombre dégradé pour rester lisible devant les particules */
+.hero-text {
+    position: relative; z-index: 1;
+    padding: 1.6rem 1.8rem 1.6rem 0;
+    border-radius: 24px;
 }
-.stage {
-    position: relative; flex: 1; min-height: 0;
-    border-radius: 18px;
-    background: radial-gradient(60% 60% at 55% 50%, rgba(147, 166, 255, .09), transparent 75%);
-    touch-action: pan-y;
+.hero-text::before {
+    content: ""; position: absolute; inset: -1.5rem -4rem -1.5rem -3rem; z-index: -1; border-radius: 32px;
+    background: radial-gradient(90% 90% at 40% 50%, rgba(18, 21, 58, .92), rgba(18, 21, 58, .55) 70%, rgba(18, 21, 58, 0));
 }
-.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
-.brain.dragging canvas { cursor: grabbing; }
+.hero-space { min-height: 10rem; }
+
+/* ---------- Nuage de particules (fond fixe) ---------- */
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; }
+main { position: relative; z-index: 1; }
+.skip-intro {
+    position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 30;
+    font: inherit; font-size: .85rem; color: var(--soft);
+    background: rgba(25, 29, 74, .8); border: 1px solid var(--line); border-radius: 999px;
+    padding: .5rem 1rem; cursor: pointer; transition: opacity .5s, color .3s;
+}
+.skip-intro:hover { color: var(--text); }
+.skip-intro.gone { opacity: 0; pointer-events: none; }
+.no-webgl .skip-intro { display: none; }
+/* repli sans WebGL : une trame de points discrète en fond */
+.no-webgl body, .no-webgl #gl { background-image: radial-gradient(rgba(147, 166, 255, .16) 1px, transparent 1.5px); background-size: 26px 26px; }
+.no-webgl #gl { display: none; }
+
+/* ---------- Compétences ---------- */
+.skills-section .section-head { margin-bottom: 1.6rem; }
+.stage { position: relative; min-height: 0; border-radius: 18px; touch-action: pan-y; }
+.webgl.labels-on .skills-section .stage { height: min(70vh, 640px); }
+.skills-section .stage:empty, .skills-section .stage:not(:has(.lbl)) { display: none; }
+.webgl.labels-on .skill-chips { display: none; }
+.skill-chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.2rem 2rem; margin: 1.2rem 0 1.4rem; }
+.chip-group h4 { font-weight: 500; font-size: .85rem; color: var(--soft); margin-bottom: .6rem; display: flex; align-items: center; gap: .45rem; }
+.chip-group h4::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--text)); }
+.chip-group h4[data-g="data"] { --c: var(--data); }
+.chip-group h4[data-g="ml"] { --c: var(--ml); }
+.chip-group h4[data-g="dev"] { --c: var(--dev); }
+.chip-group h4[data-g="tool"] { --c: var(--tool); }
+.chip {
+    font: inherit; font-size: .9rem; color: var(--text); cursor: pointer;
+    background: rgba(25, 29, 74, .8); border: 1px solid var(--line); border-radius: 999px;
+    padding: .4rem .85rem; margin: 0 .4rem .45rem 0;
+    transition: border-color .25s, opacity .3s, background .25s;
+}
+.chip[data-g="data"] { --c: var(--data); }
+.chip[data-g="ml"] { --c: var(--ml); }
+.chip[data-g="dev"] { --c: var(--dev); }
+.chip[data-g="tool"] { --c: var(--tool); }
+.chip:hover, .chip.on { border-color: var(--c); background: rgba(25, 29, 74, 1); }
+.chip.dim { opacity: .5; }
 
 .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .lbl {
@@ -219,6 +257,9 @@ a { color: inherit; }
 
 /* ---------- Sections ---------- */
 section:not(.hero) { padding: clamp(5rem, 13vh, 9rem) var(--pad); }
+/* un voile sombre sous les sections de texte : contraste garanti devant le nuage */
+.webgl section:not(.hero):not(.skills-section) { background: rgba(18, 21, 58, .72); }
+.webgl .skills-section { background: linear-gradient(rgba(18, 21, 58, 0), rgba(18, 21, 58, .72) 30%, rgba(18, 21, 58, .72)); }
 .section-head {
     display: grid; grid-template-columns: 1fr minmax(16rem, 24rem); gap: 2rem;
     align-items: end; margin-bottom: clamp(2.5rem, 6vh, 4rem);
@@ -356,8 +397,10 @@ summary { cursor: pointer; width: fit-content; }
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
     .hero { grid-template-columns: 1fr; padding-top: 5.5rem; }
-    .brain { height: auto; min-height: 0; }
-    .stage { height: 32rem; flex: none; }
+    .hero-text { padding-right: 0; }
+    .hero-text::before { inset: -1rem -1.5rem; }
+    .hero-space { min-height: 40vh; }
+    .webgl .skills-section .stage { height: 32rem; }
     .info { height: auto; min-height: 7.4rem; grid-template-columns: 1fr; }
     .info .bars { grid-column: 1; grid-row: auto; margin: .4rem 0; }
     .section-head { grid-template-columns: 1fr; }
@@ -369,10 +412,11 @@ summary { cursor: pointer; width: fit-content; }
     .preview { display: none; }
 }
 @media (max-width: 560px) {
-    .top nav a:nth-child(3) { display: none; }
+    .top nav a:nth-child(3), .top nav a:nth-child(4) { display: none; }
+    .top nav { gap: 1rem; }
     .hero { padding-top: 5rem; }
     .hero h1 { font-size: 2.5rem; }
-    .stage { height: 34rem; }   /* plus haut : les 14 étiquettes ne se chevauchent pas */
+    .webgl .skills-section .stage { height: 34rem; }   /* plus haut : les étiquettes ne se chevauchent pas */
     .lbl { font-size: .74rem; padding: .3rem .55rem; }
     .lbl.out { font-size: .8rem; padding: .35rem .6rem; }
     .lbl.out.main { font-size: 1.1rem; padding: .4rem .75rem; }
@@ -388,4 +432,3 @@ summary { cursor: pointer; width: fit-content; }
     *, *::before, *::after { transition-duration: .01ms !important; }
 }
 
-.no-webgl .stage canvas { display: none; }
