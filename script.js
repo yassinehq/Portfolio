@@ -13,27 +13,6 @@ const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
    --------------------------------------------------------- */
 const PROJECTS = [
     {
-        id: 'f1',
-        title: 'F1 Data Pipeline',
-        kind: 'Data engineering',
-        desc: "Les données de chaque Grand Prix collectées, nettoyées et publiées automatiquement.",
-        intro: "Projet data de bout en bout : chaque lundi, le pipeline récupère le dernier Grand Prix, le nettoie, le stocke et met à jour un dashboard en ligne.",
-        cover: 'img/f1-pipeline.webp',
-        gallery: [['img/f1-pipeline.webp', 'Dashboard F1 Data Pipeline']],
-        points: [
-            "Collecte via FastF1 : résultats, chaque tour de chaque pilote, pneus et arrêts aux stands",
-            "Nettoyage : détection des tours faussés (stands, Safety Car, VSC) et reconstruction des relais de pneus",
-            "Stockage DuckDB avec un chargement incrémental et idempotent, sans aucun doublon",
-            "Contrôles qualité testés avec pytest, automatisation complète via GitHub Actions",
-            "Dashboard Streamlit : classement cumulé, rythme de course, stratégies pneus, duel entre pilotes"
-        ],
-        tags: ['Python', 'SQL', 'DuckDB', 'Streamlit', 'GitHub Actions'],
-        links: [
-            ['Voir la démo live', 'https://yaseen-f1-data.streamlit.app'],
-            ['Voir le code', 'https://github.com/yassinehq/f1-data-pipeline']
-        ]
-    },
-    {
         id: 'ferrari',
         title: 'Ferrari, Executive Performance',
         kind: 'Business intelligence',
@@ -121,19 +100,18 @@ const JOBS = [
 ];
 const GROUPS = { data: 'Data', ml: 'Machine learning', dev: 'Développement', tool: 'Outils' };
 const SKILLS = [
-    { id: 'python',  label: 'Python',         g: 'data', w: { ds: 1, de: .9, da: .9 },  p: ['f1'] },
-    { id: 'sql',     label: 'SQL',            g: 'data', w: { ds: .7, de: 1, da: 1 },   p: ['f1', 'stage'] },
-    { id: 'duckdb',  label: 'DuckDB',         g: 'data', w: { ds: .5, de: 1, da: .5 },  p: ['f1'] },
+    { id: 'python',  label: 'Python',         g: 'data', w: { ds: 1, de: .9, da: .9 },  p: [] },
+    { id: 'sql',     label: 'SQL',            g: 'data', w: { ds: .7, de: 1, da: 1 },   p: ['stage'] },
     { id: 'powerbi', label: 'Power BI',       g: 'data', w: { ds: .2, de: .2, da: 1 },  p: ['ferrari'] },
     { id: 'dax',     label: 'DAX',            g: 'data', w: { ds: .1, de: .1, da: .9 }, p: ['ferrari'] },
     { id: 'excel',   label: 'Excel',          g: 'data', w: { ds: .3, de: .1, da: .8 }, p: ['ferrari'] },
-    { id: 'streamlit', label: 'Streamlit',    g: 'data', w: { ds: .7, de: .4, da: .7 }, p: ['f1'] },
+    { id: 'streamlit', label: 'Streamlit',    g: 'data', w: { ds: .7, de: .4, da: .7 }, p: [] },
     { id: 'sklearn', label: 'scikit-learn',   g: 'ml',   w: { ds: 1, de: .2, da: .5 },  p: [], extra: "mes projets d'apprentissage (Iris, Breast Cancer, California Housing)" },
     { id: 'mysql',   label: 'MySQL',          g: 'dev',  w: { ds: .4, de: .8, da: .6 }, p: ['stage'] },
     { id: 'php',     label: 'PHP',            g: 'dev',  w: { ds: .1, de: .4, da: .1 }, p: ['stage'] },
     { id: 'js',      label: 'JavaScript',     g: 'dev',  w: { ds: .1, de: .3, da: .2 }, p: ['calc', 'portfolio'] },
-    { id: 'git',     label: 'Git',            g: 'tool', w: { ds: .7, de: .9, da: .5 }, p: ['f1', 'calc'] },
-    { id: 'actions', label: 'GitHub Actions', g: 'tool', w: { ds: .3, de: 1, da: .2 },  p: ['f1'] },
+    { id: 'git',     label: 'Git',            g: 'tool', w: { ds: .7, de: .9, da: .5 }, p: ['calc'] },
+    { id: 'actions', label: 'GitHub Actions', g: 'tool', w: { ds: .3, de: 1, da: .2 },  p: [] },
     { id: 'docker',  label: 'Docker',         g: 'tool', w: { ds: .3, de: 1, da: .2 },  p: ['stage'] }
 ];
 const GROUP_HEX = { data: 0xf4b76f, ml: 0xe891bd, dev: 0x93a6ff, tool: 0x7fd3c0 };
@@ -335,7 +313,7 @@ const brain = (() => {
         const projects = s.p.map(id => PROJECTS.find(p => p.id === id)).filter(Boolean);
         const used = projects.length
             ? `Utilisé dans <strong>${projects.map(p => p.title).join('</strong>, <strong>')}</strong>`
-            : `Utilisé dans ${s.extra}`;
+            : s.extra ? `Utilisé dans ${s.extra}` : 'Pratiqué en formation et en autonomie';
         info.innerHTML = `
             <h3>${s.label}</h3>
             <div class="bars">
