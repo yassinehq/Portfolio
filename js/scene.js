@@ -154,7 +154,7 @@ export function createScene(canvas) {
         camera.updateProjectionMatrix();
         pointU.uPR.value = PR;
         // taille des points : constante à l'écran quelle que soit la hauteur de fenêtre
-        pointU.uSizeK.value = H / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.032;
+        pointU.uSizeK.value = H / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.085;   // ≈ 2,5 px pour une particule de taille 0,7 à 30 unités
     }
     addEventListener('resize', () => resize(maxPR));
     let maxPR = 1.5;

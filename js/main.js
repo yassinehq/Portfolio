@@ -46,12 +46,13 @@ if (!scene) {
     });
     html.classList.add('labels-on');
     // les étiquettes n'existent que tant que le hero est à l'écran
-    new IntersectionObserver(([en]) => labels.setEnabled(en.isIntersecting), { threshold: 0.15 }).observe(document.querySelector('.hero'));
+    const heroStage = document.getElementById('heroStage');
+    new IntersectionObserver(([en]) => labels.setEnabled(en.isIntersecting), { threshold: 0.05 }).observe(heroStage);
 
     /* ---- Pose du hero : réseau à droite du texte, vu de trois quarts ---- */
     function layoutHero() {
         const w = innerWidth;
-        if (w < 760) { scene.root.position.set(0.1, -4.5, -4); scene.root.scale.set(0.55, 0.68, 0.55); }   // étiré en hauteur : étiquettes espacées
+        if (w < 760) { scene.root.position.set(-0.4, -4.5, -4); scene.root.scale.set(0.55, 0.68, 0.55); }   // étiré en hauteur : étiquettes espacées
         else if (w < 1100) { scene.root.position.set(4.5, -1, -3); scene.root.scale.setScalar(0.8); }
         else { scene.root.position.set(6.5, -0.5, 0); scene.root.scale.setScalar(0.95); }
         scene.pose.pos.set(0, 0, 30); scene.pose.look.set(0, 0, 0);
@@ -86,6 +87,13 @@ if (!scene) {
     scene.onFrame = (dt, t) => {
         const sway = reduceMotion ? 0 : Math.sin(t * 0.2) * 0.08;
         scene.root.rotation.set(baseRot.x, baseRot.y + sway, 0);
+        // sur mobile, le réseau suit l'emplacement réservé sous le texte (il défile avec la page)
+        if (innerWidth < 760) {
+            const r = heroStage.getBoundingClientRect();
+            const ndcY = 1 - 2 * (r.top + r.height / 2) / innerHeight;
+            const dist = scene.camera.position.z - scene.root.position.z;
+            scene.root.position.y = ndcY * Math.tan(THREE.MathUtils.degToRad(scene.camera.fov / 2)) * dist + 0.6;
+        }
         scene.root.updateMatrixWorld();
         const target = introDone ? 1 : 0;
         lines.material.opacity += (target - lines.material.opacity) * Math.min(1, dt * 2);
