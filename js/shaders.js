@@ -75,8 +75,9 @@ export const copyFrag = /* glsl */`
 export const pointVert = /* glsl */`
     precision highp float;
     attribute vec2 ref;
-    uniform sampler2D tPos, tVel, tColA, tColB, tSizeA, tSizeB;
-    uniform float uMix, uTime, uPR, uSizeK, uFogNear, uFogFar, uPulse;
+    uniform sampler2D tPos, tVel, tColA, tColB, tSizeA, tSizeB, tAct;
+    uniform float uMix, uTime, uPR, uSizeK, uFogNear, uFogFar, uPulse, uDim;
+    uniform vec3 uActColor;
     varying vec3 vColor;
     varying float vAlpha, vGlow;
     void main() {
@@ -86,20 +87,28 @@ export const pointVert = /* glsl */`
         float size = mix(texture2D(tSizeA, ref).w, texture2D(tSizeB, ref).w, uMix);
         vColor = mix(ca.rgb, cb.rgb, uMix);
 
-        // impulsions : une onde lumineuse parcourt chaque synapse (w = position le long du segment)
-        float t = mix(ca.w, cb.w, uMix);
-        float wave = 0.0;
-        if (t >= 0.0) {
+        // w de la couleur : -1 = rien ; >= 0 : synapse (partie entière = arête, fraction = position) ;
+        // <= -2 : nœud (index = -w - 2). Sert aux impulsions et au chemin allumé au survol.
+        float w = uMix < 0.5 ? ca.w : cb.w;
+        float wave = 0.0, act = 0.0;
+        if (w >= 0.0) {
+            float t = fract(w);
             float phase = fract(uTime * 0.35 + fract(ref.x * 13.7 + ref.y * 7.9));
             wave = smoothstep(0.12, 0.0, abs(t - phase)) * uPulse;
+            act = texture2D(tAct, vec2((floor(w) + 0.5) / 256.0, 0.5)).r;
+        } else if (w <= -2.0) {
+            act = texture2D(tAct, vec2((128.0 - w - 2.0 + 0.5) / 256.0, 0.5)).r;
         }
-        vGlow = clamp(speed * 0.05, 0.0, 0.6) + wave;
+        // chemin actif : coloré et plus lumineux ; le reste s'estompe
+        vColor = mix(vColor, uActColor, act * 0.75);
+        vGlow = clamp(speed * 0.05, 0.0, 0.6) + wave + act * 0.5;
         vColor = mix(vColor, vec3(1.0, 0.97, 0.9), wave * 0.8);
+        float dim = 1.0 - uDim * (1.0 - act) * 0.7;
 
         vec4 mv = modelViewMatrix * vec4(pos, 1.0);
         float depth = -mv.z;
-        vAlpha = 1.0 - clamp((depth - uFogNear) / (uFogFar - uFogNear), 0.0, 1.0);
-        gl_PointSize = max(1.0, size * uSizeK * uPR * (1.0 + wave * 0.8) / depth);
+        vAlpha = (1.0 - clamp((depth - uFogNear) / (uFogFar - uFogNear), 0.0, 1.0)) * dim;
+        gl_PointSize = max(1.0, size * uSizeK * uPR * (1.0 + wave * 0.8 + act * 0.35) / depth);
         gl_Position = projectionMatrix * mv;
     }
 `;

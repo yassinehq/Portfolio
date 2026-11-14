@@ -64,13 +64,27 @@ export function createScene(canvas) {
     /* ---- Rendu des particules ---- */
     const pointU = {
         tPos: simU.tPos, tVel: simU.tVel, tSizeA: simU.tTargetA, tSizeB: simU.tTargetB, tColA: { value: null }, tColB: { value: null }, uMix: simU.uMix, uTime: simU.uTime,
-        uPR: { value: 1 }, uSizeK: { value: 120 }, uFogNear: { value: 20 }, uFogFar: { value: 60 }, uPulse: { value: reduceMotion ? 0 : 1 }
+        uPR: { value: 1 }, uSizeK: { value: 120 }, uFogNear: { value: 20 }, uFogFar: { value: 60 }, uPulse: { value: reduceMotion ? 0 : 1 },
+        tAct: { value: null }, uDim: { value: 0 }, uActColor: { value: new THREE.Color(0xfff3dc) }
     };
     const pointMat = new THREE.ShaderMaterial({
         uniforms: pointU, vertexShader: pointVert, fragmentShader: pointFrag,
         transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending
     });
     let points = null;
+    /* activité des arêtes (0..127) et des nœuds (128..255) : chemin allumé au survol */
+    const actData = new Uint8Array(256 * 4);
+    const actTex = new THREE.DataTexture(actData, 256, 1, THREE.RGBAFormat, THREE.UnsignedByteType);
+    actTex.minFilter = actTex.magFilter = THREE.NearestFilter;
+    actTex.needsUpdate = true;
+    pointU.tAct.value = actTex;
+    function setActivity(edgeIds, nodeLevels, color) {
+        actData.fill(0);
+        edgeIds?.forEach(i => { actData[i * 4] = 255; });
+        nodeLevels?.forEach((lvl, i) => { actData[(128 + i) * 4] = Math.round(Math.max(0, Math.min(1, lvl)) * 255); });
+        actTex.needsUpdate = true;
+        if (color) pointU.uActColor.value.copy(color);
+    }
 
     /* ---- État : construit (ou reconstruit) pour une taille de texture S ---- */
     let S = 0, N = 0, rts = null, shapes = {}, pendingShape = null;
@@ -218,7 +232,7 @@ export function createScene(canvas) {
     resize();
     return {
         renderer, scene, camera, root, pose, simU, pointU,
-        buildSim, registerShape, setTarget, setMix, teleport, start, stop, measure,
+        buildSim, registerShape, setTarget, setMix, teleport, start, stop, measure, setActivity, step,
         get N() { return N; }, get S() { return S; }, get stateType() { return stateType; }, get rts() { return rts; }, get shapes() { return shapes; },
         set onFrame(f) { onFrame = f; },
         setMaxPR(v) { maxPR = v; resize(v); },

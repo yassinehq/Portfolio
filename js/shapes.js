@@ -61,7 +61,7 @@ export function build(n, parts, seed = 7) {
                 sampler.sample(tmp);
                 tmp.applyMatrix4(p.mesh.matrixWorld);
                 const c = p.colorAt ? p.colorAt(tmp) : color;
-                shape.add(tmp.x + (rand() - .5) * jitter, tmp.y + (rand() - .5) * jitter, tmp.z + (rand() - .5) * jitter, p.size * (0.7 + rand() * 0.6), c);
+                shape.add(tmp.x + (rand() - .5) * jitter, tmp.y + (rand() - .5) * jitter, tmp.z + (rand() - .5) * jitter, p.size * (0.7 + rand() * 0.6), c, p.tag ?? -1);
             }
         } else if (p.segments) {
             const lens = p.segments.map(([a, b]) => a.distanceTo(b));
@@ -72,7 +72,7 @@ export function build(n, parts, seed = 7) {
                     const t = rand();
                     tmp.lerpVectors(a, b, t);
                     const c = p.colorAt ? p.colorAt(tmp, k) : color;
-                    shape.add(tmp.x + (rand() - .5) * jitter, tmp.y + (rand() - .5) * jitter, tmp.z + (rand() - .5) * jitter, p.size * (0.6 + rand() * 0.7), c, p.pulse ? t : -1);
+                    shape.add(tmp.x + (rand() - .5) * jitter, tmp.y + (rand() - .5) * jitter, tmp.z + (rand() - .5) * jitter, p.size * (0.6 + rand() * 0.7), c, p.pulse ? k + Math.min(t, 0.999) : -1);
                 }
             });
         } else if (p.points) {
@@ -111,7 +111,7 @@ export function networkLayout({ spread = 1, curl = 1, xGap = 6.4, yScale = 1 } =
         nodes.push(n); return n;
     });
     const X0 = -xGap * 1.55, X1 = xGap * 1.45;
-    const inputs = layer(SKILLS.length, X0, 15, 5.0, 'in', 0, i => ({ skill: SKILLS[i], color: new THREE.Color(GROUP_HEX[SKILLS[i].g]), r: 0.42 }));
+    const inputs = layer(SKILLS.length, X0, 15, 5.0, 'in', 0, i => ({ skill: SKILLS[i], color: new THREE.Color(GROUP_HEX[SKILLS[i].g]), r: 0.58 }));
     const h1 = layer(8, X0 + xGap, 12, 4.2, 'hid', 0.3, () => ({ color: new THREE.Color(0xb8b9e6), r: 0.3 }));
     const h2 = layer(6, X0 + xGap * 2, 9, 3.4, 'hid', 1.1, () => ({ color: new THREE.Color(0xb8b9e6), r: 0.3 }));
     const outs = JOBS.map((j, i) => {
@@ -131,7 +131,7 @@ export function network(n, layout, { nodeShare = 0.38, seed = 11 } = {}) {
     layout.nodes.forEach(nd => {
         const mesh = new THREE.Mesh(new THREE.SphereGeometry(nd.r, 12, 8));
         mesh.position.copy(nd.pos);
-        parts.push({ mesh, color: nd.color, size: nd.kind === 'out' ? 1.0 : 0.85, share: nodeShare * nd.r * nd.r / sumR2, jitter: 0.08 });
+        parts.push({ mesh, color: nd.color, size: nd.kind === 'out' ? 1.0 : 0.85, share: nodeShare * nd.r * nd.r / sumR2, jitter: 0.08, tag: -(2 + layout.nodes.indexOf(nd)) });
     });
     const synColor = new THREE.Color(0x7d80b8);
     parts.push({

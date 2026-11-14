@@ -141,7 +141,10 @@ a { color: inherit; }
     content: ""; position: absolute; inset: -1.5rem -4rem -1.5rem -3rem; z-index: -1; border-radius: 32px;
     background: radial-gradient(90% 90% at 40% 50%, rgba(18, 21, 58, .92), rgba(18, 21, 58, .55) 70%, rgba(18, 21, 58, 0));
 }
-.hero-space { min-height: 10rem; }
+/* colonne droite du hero : le réseau est derrière ; l'aide et la fiche en bas */
+.hero-space { position: relative; z-index: 2; align-self: end; min-height: 10rem; display: flex; align-items: flex-end; justify-content: flex-end; padding-bottom: .5rem; }
+.hero-info { max-width: 36rem; width: 100%; pointer-events: auto; }
+.hero-info .info-hint { font-size: .9rem; text-align: right; max-width: none; }
 
 /* ---------- Nuage de particules (fond fixe) ---------- */
 #gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; }
@@ -164,7 +167,6 @@ main { position: relative; z-index: 1; }
 .stage { position: relative; min-height: 0; border-radius: 18px; touch-action: pan-y; }
 .webgl.labels-on .skills-section .stage { height: min(70vh, 640px); }
 .skills-section .stage:empty, .skills-section .stage:not(:has(.lbl)) { display: none; }
-.webgl.labels-on .skill-chips { display: none; }
 .skill-chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.2rem 2rem; margin: 1.2rem 0 1.4rem; }
 .chip-group h4 { font-weight: 500; font-size: .85rem; color: var(--soft); margin-bottom: .6rem; display: flex; align-items: center; gap: .45rem; }
 .chip-group h4::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--text)); }
@@ -185,7 +187,10 @@ main { position: relative; z-index: 1; }
 .chip:hover, .chip.on { border-color: var(--c); background: rgba(25, 29, 74, 1); }
 .chip.dim { opacity: .5; }
 
-.labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+/* couche fixe d'étiquettes, au-dessus du canvas et sous le texte */
+.labels { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.labels.hidden { display: none; }
+.no-webgl .labels { display: none; }
 .lbl {
     position: absolute; left: 0; top: 0;
     pointer-events: auto;

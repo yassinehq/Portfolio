@@ -17,6 +17,20 @@ const infoDefault = info.innerHTML;
 const chips = document.getElementById('skillChips');
 let activeSkill = null, lockedSkill = false;
 
+/* rend la fiche d'une compétence dans un élément donné (hero et section compétences) */
+export function renderSkillInfo(el, s) {
+    const projects = s.p.map(id => PROJECTS.find(p => p.id === id)).filter(Boolean);
+    const used = projects.length
+        ? `Utilisé dans <strong>${projects.map(p => p.title).join('</strong>, <strong>')}</strong>`
+        : s.extra ? `Utilisé dans ${s.extra}` : 'Pratiqué en formation et en autonomie';
+    el.innerHTML = `
+        <h3>${s.label}</h3>
+        <div class="bars">
+            ${JOBS.map(j => `<span>${j.label}</span><span class="bar"><span style="width:${Math.round(s.w[j.id] * 100)}%"></span></span>`).join('')}
+        </div>
+        <p class="used">${used}.</p>
+        ${projects.length ? `<button type="button" class="pill small" data-skill="${s.id}">Voir ces projets</button>` : ''}`;
+}
 export function showSkill(s, lock = false) {
     activeSkill = s; lockedSkill = lock && !!s;
     chips.querySelectorAll('.chip').forEach(c => {
@@ -24,17 +38,7 @@ export function showSkill(s, lock = false) {
         c.classList.toggle('dim', !!s && c.dataset.id !== s.id);
     });
     if (!s) { info.innerHTML = infoDefault; return; }
-    const projects = s.p.map(id => PROJECTS.find(p => p.id === id)).filter(Boolean);
-    const used = projects.length
-        ? `Utilisé dans <strong>${projects.map(p => p.title).join('</strong>, <strong>')}</strong>`
-        : s.extra ? `Utilisé dans ${s.extra}` : 'Pratiqué en formation et en autonomie';
-    info.innerHTML = `
-        <h3>${s.label}</h3>
-        <div class="bars">
-            ${JOBS.map(j => `<span>${j.label}</span><span class="bar"><span style="width:${Math.round(s.w[j.id] * 100)}%"></span></span>`).join('')}
-        </div>
-        <p class="used">${used}.</p>
-        ${projects.length ? `<button type="button" class="pill small" data-skill="${s.id}">Voir ces projets</button>` : ''}`;
+    renderSkillInfo(info, s);
 }
 Object.entries(GROUPS).forEach(([g, label]) => {
     const group = document.createElement('div');
