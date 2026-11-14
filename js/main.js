@@ -51,7 +51,7 @@ if (!scene) {
     /* ---- Pose du hero : réseau à droite du texte, vu de trois quarts ---- */
     function layoutHero() {
         const w = innerWidth;
-        if (w < 760) { scene.root.position.set(1.2, -4, -4); scene.root.scale.setScalar(0.62); }
+        if (w < 760) { scene.root.position.set(0.1, -4.5, -4); scene.root.scale.set(0.55, 0.68, 0.55); }   // étiré en hauteur : étiquettes espacées
         else if (w < 1100) { scene.root.position.set(4.5, -1, -3); scene.root.scale.setScalar(0.8); }
         else { scene.root.position.set(6.5, -0.5, 0); scene.root.scale.setScalar(0.95); }
         scene.pose.pos.set(0, 0, 30); scene.pose.look.set(0, 0, 0);
@@ -82,7 +82,7 @@ if (!scene) {
     scene.start();
 
     /* ---- Respiration du réseau + rotation très lente, étiquettes qui suivent ---- */
-    const baseRot = { x: 0.1, y: -0.3 };
+    const baseRot = { x: narrow ? 0.03 : 0.1, y: narrow ? -0.2 : -0.3 };
     scene.onFrame = (dt, t) => {
         const sway = reduceMotion ? 0 : Math.sin(t * 0.2) * 0.08;
         scene.root.rotation.set(baseRot.x, baseRot.y + sway, 0);
