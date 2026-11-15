@@ -1,0 +1,43 @@
+{
+  "updated": "2026-11-15",
+  "ia": [
+    {
+      "title": "Build a Robot Pick-and-Place Simulation with SimReady Assets",
+      "url": "https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place",
+      "source": "Hugging Face",
+      "date": "2026-11-13"
+    },
+    {
+      "title": "Introducing ChatGPT Wallet",
+      "url": "https://openai.com/index/introducing-chatgpt-wallet",
+      "source": "OpenAI",
+      "date": "2026-11-13"
+    },
+    {
+      "title": "Nvidia privately confirmed it could track chips to fight smuggling, even as industry publicly questioned feasibility",
+      "url": "https://www.technologyreview.com/2026/11/12/1148483/nvidia-chip-tracking/",
+      "source": "MIT Technology Review",
+      "date": "2026-11-12"
+    }
+  ],
+  "data": [
+    {
+      "title": "A Practitioner's Guide to 6 Agentic GraphRAG Patterns",
+      "url": "https://towardsdatascience.com/a-practitioners-guide-to-6-agentic-graphrag-patterns/",
+      "source": "Towards Data Science",
+      "date": "2026-11-15"
+    },
+    {
+      "title": "Weight-Only Quantization",
+      "url": "https://machinelearningmastery.com/weight-only-quantization/",
+      "source": "Machine Learning Mastery",
+      "date": "2026-11-14"
+    },
+    {
+      "title": "Advancing science & engineering with Antigravity’s /teamwork",
+      "url": "https://research.google/blog/advancing-science-engineering-with-antigravitys-teamwork-feature/",
+      "source": "Google Research",
+      "date": "2026-11-13"
+    }
+  ]
+}

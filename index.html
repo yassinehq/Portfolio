@@ -8,455 +8,248 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-PWKD0TJZ0T');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Yassine Mahjoubi</title>
-    
+    <title>Yassine Mahjoubi — Portfolio</title>
+    <meta name="description" content="Portfolio de Yassine Mahjoubi, étudiant en BTS SIO SLAM à Dijon, futur data scientist et data engineer. Je cherche un stage ou une alternance en data.">
+    <meta name="theme-color" content="#12153a">
+    <link rel="icon" href="favicon.ico" sizes="any">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+        "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js",
+        "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.mjs"
+    } }
+    </script>
 </head>
 <body>
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="labels" id="netLabels" aria-label="Réseau de compétences"></div>
+    <button type="button" id="skipIntro" class="skip-intro">Passer l'intro</button>
+    <a class="skip" href="#projets">Aller aux projets</a>
 
-    <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <header>
-        <div class="logo">Y. MAHJOUBI</div>
-        <nav>
-            <ul>
-                <li><a href="#about">À propos</a></li>
-                <li><a href="#resume">Parcours</a></li>
-                <li><a href="#projects">Projets</a></li>
-                <li><a href="#contact" class="btn">Contact</a></li>
-            </ul>
+    <header class="top">
+        <a class="mark" href="#top" aria-label="Retour en haut">Y.M</a>
+        <nav aria-label="Navigation principale">
+            <a href="#competences">Compétences</a>
+            <a href="#projets">Projets</a>
+            <a href="#apropos">À propos</a>
+            <a href="#parcours">Parcours</a>
+            <a href="#contact">Contact</a>
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="big-bg-text">PORTFOLIO<br>PORTFOLIO<br>PORTFOLIO</div>
-        
-        <div class="hero-content">
+    <main id="top">
+        <!-- HERO : qui je suis + réseau de compétences 3D -->
+        <section class="hero">
             <div class="hero-text">
-                <div class="hero-tag">DATA ANALYST</div>
-                <h1>Yassine<br>Mahjoubi</h1>
-                <p style="margin-bottom: 30px; font-style: italic;">Étudiant en BTS SIO option SLAM - Futur Data Analyst</p>
-                
-                <div style="display: flex; gap: 15px;">
-                    <a href="https://github.com/yassinehq" target="_blank" style="font-size: 1.5rem;"><i class="fab fa-github"></i></a>
-                    <a href="https://fr.linkedin.com/in/mahjoubi-yassine" target="_blank" style="font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+                <div class="hero-id">
+                    <picture class="hero-portrait">
+                        <source srcset="img/portrait.webp" type="image/webp">
+                        <img src="img/portrait.jpg" alt="Portrait de Yassine Mahjoubi" width="720" height="720" fetchpriority="high">
+                    </picture>
+                    <p class="hero-name">Yassine Mahjoubi<small>18 ans · BTS SIO SLAM, Dijon</small><a class="hero-badge" href="#certifications">Certifié INSIDE LVMH</a></p>
+                </div>
+                <h1>Futur<br><span>data scientist</span><br><em>&amp;</em> <span>data engineer</span></h1>
+                <p class="hero-lede">Étudiant en BTS SIO SLAM à Dijon, option mathématiques approfondies. Je transforme des données en décisions avec Python, SQL, Power BI et scikit-learn, et je m'appuie sur Git et Docker pour des projets propres et reproductibles.</p>
+                <p class="hero-status"><span class="dot" aria-hidden="true"></span>Je cherche un stage ou une alternance en data</p>
+                <div class="hero-cta">
+                    <a class="pill solid" href="#projets">Voir les projets</a>
+                    <a class="pill" href="#contact">Me contacter</a>
                 </div>
             </div>
 
-            <div class="hero-img-container">
-                <img src="yass.jpg" alt="Yassine Mahjoubi" class="hero-img">
+            <div class="hero-space">
+                <div class="hero-stage" id="heroStage" aria-hidden="true"></div>
+                <div class="info hero-info" id="heroInfo" aria-live="polite">
+                    <p class="info-hint">Mes compétences → les métiers que je vise. Survolez une compétence.</p>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="about" class="about">
-        <div class="about-container">
+        <!-- COMPÉTENCES : le réseau se déplie, chaque compétence mène aux métiers visés -->
+        <section id="competences" class="skills-section">
+            <div class="section-head">
+                <h2>Compétences</h2>
+                <p>Par famille. Survolez ou touchez une compétence : son poids vers chaque métier et les projets où je l'utilise.</p>
+            </div>
+            <div class="skill-chips" id="skillChips"></div>
+            <div class="info" id="info" aria-live="polite">
+                <p class="info-hint">Survolez ou touchez une compétence pour voir son poids vers data scientist, data engineer et data analyst, et les projets où je l'utilise.</p>
+            </div>
+        </section>
+
+        <!-- PROJETS -->
+        <section id="projets" class="projects">
+            <div class="section-head">
+                <h2>Projets</h2>
+                <p>Du dashboard Power BI au machine learning. Chaque projet prend forme en défilant ; cliquez pour ouvrir sa fiche.</p>
+            </div>
+            <div class="chapters" id="chapters"></div>
+            <h3 class="recap-title">Tous les projets</h3>
+            <div class="filter" id="filter" hidden>
+                <p>Projets qui utilisent <strong id="filterName"></strong></p>
+                <button type="button" class="pill small" id="filterReset">Tout afficher</button>
+            </div>
+            <ol class="project-list" id="projectList"></ol>
+        </section>
+
+        <!-- À PROPOS -->
+        <section id="apropos" class="about">
+            <figure class="about-portrait">
+                <picture>
+                    <source srcset="img/portrait-tall.webp" type="image/webp">
+                    <img src="img/portrait.jpg" alt="Yassine Mahjoubi, en train de lire Le Petit Prince" loading="lazy" width="680" height="906">
+                </picture>
+            </figure>
             <div class="about-text">
-                <h2 class="about-title" id="greetingText">Hello,<br>I'm Yassine !</h2>
-                <p>Je m'appelle <strong>Yassine Mahjoubi</strong>, j'ai 18 ans et je suis actuellement étudiant en <strong>2ème année de BTS SIO option SLAM</strong> au lycée Saint-Bénigne.</p>
-                <p>Passionné depuis mon plus jeune âge par les jeux vidéos et la technologie, j'ai rapidement développé un intérêt pour le développement informatique. Cette passion m'a naturellement conduit vers la programmation de logiciels applicatifs.</p>
-                <p>
-Je souhaite évoluer vers le métier de <strong>Data Analyst</strong>, 
-en analysant des données pour aider à la prise de décision. 
-Je m'intéresse particulièrement aux statistiques, aux bases de données 
-et à la visualisation de données.
-</p>
-                <a href="#contact" class="btn" style="margin-top: 20px;">Me contacter</a>
+                <h2 class="greeting" id="greeting" aria-live="off">Bonjour, je suis Yassine.</h2>
+                <p>J'ai 18 ans et je suis en <strong>2ème année de BTS SIO option SLAM</strong> au lycée Saint-Bénigne, à Dijon.</p>
+                <p>Les jeux vidéo et la technologie m'ont mené vers le développement. Aujourd'hui, ce qui m'attire, ce sont les données : les analyser, les modéliser et les rendre lisibles pour aider à prendre des décisions.</p>
+                <p>Je m'intéresse particulièrement aux statistiques, au machine learning, aux bases de données et aux pipelines qui rendent les données fiables.</p>
+                <a class="pill" href="#contact">Me contacter</a>
             </div>
-            
-            <div class="about-image-wrapper">
-                <div class="arch-image">
-                    <img src="Pose 2.png" alt="Photo Profil">
-                </div>
+        </section>
+
+        <!-- PARCOURS -->
+        <section id="parcours" class="path">
+            <div class="section-head">
+                <h2>Parcours</h2>
             </div>
-        </div>
-    </section>
 
-    <section id="resume" class="resume-section">
-        <div class="resume-bg-text">RESUME<br>RESUME<br>SKILLS</div>
-        
-        <div class="section-header">
-            <h2 class="highlight-text">Mon Parcours</h2>
-        </div>
-
-        <div class="grid-resume">
-            <div class="left-column">
-                <div class="resume-col">
-                    <h3>Education</h3>
-                    
-                    <div class="timeline-item">
-                        <div class="date">2025 - Aujourd'hui</div>
-                        <div class="degree">BTS SIO SLAM</div>
-                        <div class="school">Lycée Saint-Bénigne</div>
-                        <p style="font-size: 0.9rem; margin-top: 5px;">Solutions Logicielles et Applications Métiers.</p>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="date">2022 - 2025</div>
-                        <div class="degree">Baccalauréat</div>
-                        <div class="school">Lycée Charles de Gaulle</div>
-                        <p style="font-size: 0.9rem; margin-top: 5px;">Orientation vers l'informatique et projets personnels.</p>
-                    </div>
+            <div class="path-grid">
+                <div class="timeline">
+                    <h3>Formation</h3>
+                    <ol>
+                        <li>
+                            <span class="when">2025 – aujourd'hui</span>
+                            <strong>BTS SIO SLAM</strong>
+                            <span>Lycée Saint-Bénigne. Solutions logicielles et applications métiers, option mathématiques approfondies.</span>
+                        </li>
+                        <li>
+                            <span class="when">2022 – 2025</span>
+                            <strong>Baccalauréat</strong>
+                            <span>Lycée Charles de Gaulle. Orientation vers l'informatique et premiers projets personnels.</span>
+                        </li>
+                    </ol>
                 </div>
 
-                <div class="skills-container" style="grid-template-columns: 1fr;">
+                <div class="skills">
                     <h3>Compétences</h3>
-                    
-                    <div class="skill-box">
-                        <h4 style="color: var(--accent-orange); margin-bottom: 15px;">
-                            <i class="fas fa-code" style="margin-right: 8px;"></i>Langages de Programmation
-                        </h4>
-                        <ul class="skill-list" style="font-size: 0.9rem;">
-                            <li><i class="fab fa-html5" style="margin-right: 8px; color: var(--accent-orange);"></i>HTML 5</li>
-                            <li><i class="fab fa-css3-alt" style="margin-right: 8px; color: var(--accent-orange);"></i>CSS 3</li>
-                            <li><i class="fab fa-js" style="margin-right: 8px; color: var(--accent-orange);"></i>JavaScript</li>
-                            <li><i class="fab fa-python" style="margin-right: 8px; color: var(--accent-orange);"></i>Python</li>
-                        </ul>
-                    </div>
+                    <dl>
+                        <dt>Data</dt><dd>Python, SQL, Power BI, DAX, Excel, scikit-learn</dd>
+                        <dt>Développement</dt><dd>HTML, CSS, JavaScript, PHP, MySQL, Docker</dd>
+                        <dt>Outils</dt><dd>Git, VS Code, Figma, Photoshop, Azure DevOps</dd>
+                        <dt>Langues</dt><dd>Français (natif), anglais (C1), espagnol (B1), arabe (A2)</dd>
+                        <dt>Savoir-être</dt><dd>Travail en équipe, gestion de projet, autonomie, communication</dd>
+                    </dl>
+                </div>
 
-                    <div class="skill-box">
-                        <h4 style="color: var(--accent-orange); margin-bottom: 15px;">
-                            <i class="fas fa-tools" style="margin-right: 8px;"></i>Frameworks & Outils
-                        </h4>
-                        <ul class="skill-list" style="font-size: 0.9rem;">
-                            <li><i class="fab fa-git-alt" style="margin-right: 8px; color: var(--accent-orange);"></i>Git / GitHub</li>
-                            <li><i class="fas fa-code" style="margin-right: 8px; color: var(--accent-orange);"></i>Visual Studio Code</li>
-                            <li><i class="fab fa-figma" style="margin-right: 8px; color: var(--accent-orange);"></i>Figma</li>
-                            <li><i class="fas fa-paint-brush" style="margin-right: 8px; color: var(--accent-orange);"></i>Photoshop</li>
-                            <li><i class="fas fa-mobile-alt" style="margin-right: 8px; color: var(--accent-orange);"></i>Responsive Design</li>
-                            <li><i class="fab fa-bootstrap" style="margin-right: 8px; color: var(--accent-orange);"></i>Bootstrap</li>
-                            <li><i class="fab fa-microsoft" style="margin-right: 8px; color: var(--accent-orange);"></i>Azure / Azure DevOps</li>
-                        </ul>
-                    </div>
+                <div class="goals">
+                    <h3>Objectifs</h3>
+                    <p>Trouver un stage ou une alternance en data, appliquer Python, SQL et le machine learning à des données réelles, et progresser en statistiques et en ingénierie de données.</p>
+                    <p class="muted">Métiers visés : data scientist, data engineer. Data analyst aussi possible.</p>
+                </div>
 
-                    <div class="skill-box">
-                        <h4 style="color: var(--accent-orange); margin-bottom: 15px;">
-                            <i class="fas fa-users" style="margin-right: 8px;"></i>Compétences Professionnelles
-                        </h4>
-                        <ul class="skill-list" style="font-size: 0.9rem;">
-                            <li><i class="fas fa-check-circle" style="margin-right: 8px; color: var(--accent-orange);"></i>Travail en équipe</li>
-                            <li><i class="fas fa-check-circle" style="margin-right: 8px; color: var(--accent-orange);"></i>Gestion de projet</li>
-                            <li><i class="fas fa-check-circle" style="margin-right: 8px; color: var(--accent-orange);"></i>Résolution de problèmes</li>
-                            <li><i class="fas fa-check-circle" style="margin-right: 8px; color: var(--accent-orange);"></i>Communication</li>
-                            <li><i class="fas fa-check-circle" style="margin-right: 8px; color: var(--accent-orange);"></i>Autonomie</li>
-                        </ul>
+                <div class="watch">
+                    <h3>Veille technologique</h3>
+                    <p>Je suis l'évolution de l'IA, des outils data et du développement web. Les articles ci-dessous sont mis à jour chaque semaine automatiquement (GitHub Actions + flux RSS).</p>
+                    <div class="veille" id="veille">
+                        <div class="veille-col">
+                            <h4>Nouveautés de l'IA</h4>
+                            <ul id="veilleIa"></ul>
+                        </div>
+                        <div class="veille-col">
+                            <h4>Data &amp; machine learning</h4>
+                            <ul id="veilleData"></ul>
+                        </div>
+                        <p class="veille-meta muted" id="veilleMeta"></p>
                     </div>
-
-                    <div class="skill-box">
-                        <h4 style="color: var(--accent-orange); margin-bottom: 15px;">
-                            <i class="fas fa-globe" style="margin-right: 8px;"></i>Langues
-                        </h4>
-                        <ul class="skill-list" style="font-size: 0.9rem;">
-                            <li><i class="fas fa-flag" style="margin-right: 8px; color: var(--accent-orange);"></i>Français (Langue maternelle)</li>
-                            <li><i class="fas fa-flag" style="margin-right: 8px; color: var(--accent-orange);"></i>Anglais (Niveau C1)</li>
-                            <li><i class="fas fa-flag" style="margin-right: 8px; color: var(--accent-orange);"></i>Espagnol (B1)</li>
-                            <li><i class="fas fa-flag" style="margin-right: 8px; color: var(--accent-orange);"></i>Arabe (A2)</li>
-                        </ul>
-                    </div>
+                    <details>
+                        <summary>Afficher ma collection Wakelet</summary>
+                        <div class="wakelet">
+                            <iframe src="https://embed.wakelet.com/wakes/5bSlQ0e73dQkqQLvCR5SH" title="Ma collection de veille technologique sur Wakelet" loading="lazy" allowfullscreen></iframe>
+                        </div>
+                    </details>
+                    <a class="link" href="https://wakelet.com/wake/5bSlQ0e73dQkqQLvCR5SH" target="_blank" rel="noopener">Ouvrir la collection sur Wakelet</a>
                 </div>
             </div>
+        </section>
 
-            <div class="right-column">
-                <div class="info-card">
-                    <h3>Profil</h3>
-                    <p>
-                        Étudiant en BTS SIO option SLAM, je me spécialise dans le développement
-                        d'applications web et logicielles. Curieux, autonome et motivé,
-                        je développe régulièrement des projets personnels afin de renforcer mes compétences
-                        en programmation et conception d'applications.
-                    </p>
-                </div>
-
-                <div class="info-card">
-                    <h3>Veille Technologique</h3>
-                    <p>
-                        Je réalise une veille technologique régulière afin de suivre les évolutions
-                        du développement web, des langages de programmation et des outils numériques.
-                    </p>
-                    <p style="margin-top: 15px;">
-                        <strong>Sources utilisées :</strong>
-                    </p>
-                    <ul style="margin-top: 10px;">
-                        <li>• <strong>GitHub</strong> - Découverte de projets open source et nouvelles technologies</li>
-                        <li>• <strong>MDN Web Docs</strong> - Documentation officielle HTML/CSS/JavaScript</li>
-                        <li>• <strong>YouTube</strong> - Tutoriels vidéo et conférences tech</li>
-                    </ul>
-                    <p style="margin-top: 20px;">
-                        <strong>Ma collection de veille :</strong>
-                    </p>
-                    <div class="wakelet-embed">
-                        <iframe
-                            src="https://embed.wakelet.com/wakes/5bSlQ0e73dQkqQLvCR5SH"
-                            title="Ma collection de veille technologique sur Wakelet"
-                            loading="lazy"
-                            allowfullscreen>
-                        </iframe>
+        <!-- CERTIFICATION -->
+        <section id="certifications" class="cert-section">
+            <div class="cert-layout">
+                <div class="cert-copy">
+                    <div class="section-head">
+                        <h2>Certification</h2>
                     </div>
-                    <p style="margin-top: 10px; font-size: 0.85rem;">
-                        <a href="https://wakelet.com/wake/5bSlQ0e73dQkqQLvCR5SH" target="_blank" rel="noopener">
-                            <i class="fas fa-external-link-alt"></i> Voir la collection complète sur Wakelet
+                    <article class="cert">
+                        <a class="cert-thumb" href="docs/certificat-inside-lvmh.pdf" target="_blank" rel="noopener" aria-label="Ouvrir le certificat INSIDE LVMH (PDF)">
+                            <img src="img/certificat-inside-lvmh.webp" alt="Certificat INSIDE LVMH au nom de Yassine Mahjoubi" loading="lazy" width="976" height="675">
                         </a>
-                    </p>
-                </div>
-
-                <div class="info-card">
-                    <h3>Objectifs Professionnels</h3>
-                    <ul>
-                        <li>• Approfondir l'analyse de données et la Business Intelligence</li>
-                        <li>• Acquérir de l'expérience professionnelle via un stage ou une alternance en data</li>
-                        <li>• Maîtriser Power BI, SQL et Python pour la data</li>
-                        <li>• Construire des dashboards et analyses concrets sur données réelles</li>
-                        <li>• Se perfectionner en statistiques et modélisation de données</li>
-                    </ul>
-                </div>
-
-                <div class="info-card">
-                    <h3>Métiers Visés</h3>
-                    <ul>
-                        <li>• Data Analyst</li>
-                        <li>• BI Developer</li>
-                        <li>• Data Engineer</li>
-                        <li>• Database Administrator</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="projects-section">
-        <h2 class="section-title" style="font-size: 3rem; text-align: center; margin-bottom: 50px;">Mes Projets</h2>
-        
-        <div class="projects-carousel">
-            <button class="carousel-arrow carousel-arrow-left" id="prevProject" aria-label="Projet précédent">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-
-            <div class="projects-track" id="projectsTrack">
-                <a href="https://yassinehq.github.io/calculator/" target="_blank" class="project-slide active">
-                    <div class="project-card">
-                        <div class="project-img" style="background-image: url('calculatrice.png'); background-color: #333;"></div>
-                        <h3>Calculatrice</h3>
-                        <p style="font-size: 0.9rem; margin: 10px 0;">Application interactive développée en JS pur.</p>
-                        <div class="badge-container">
-                            <span class="badge">HTML</span>
-                            <span class="badge">CSS</span>
-                            <span class="badge">JS</span>
-                            <span class="badge">Git</span>
-                            <span class="badge">Github</span>
+                        <div class="cert-text">
+                            <strong>INSIDE LVMH Certificate</strong>
+                            <span class="when">LVMH · obtenu le 13/11/2026</span>
+                            <p>Spécialisations : Creation &amp; Branding, Operations &amp; Supply Chain.</p>
+                            <p>L'écosystème LVMH, les fondamentaux de l'industrie du luxe et ses enjeux.</p>
+                            <a class="link" href="docs/certificat-inside-lvmh.pdf" target="_blank" rel="noopener">Voir le certificat</a>
                         </div>
-                    </div>
-                </a>
-
-                <a href="https://yaseen.azurewebsites.net/" target="_blank" class="project-slide">
-                    <div class="project-card">
-                        <div class="project-img" style="background-image: url('Portfolio.png'); background-color: #333;"></div>
-                        <h3>Mon Portfolio</h3>
-                        <p style="font-size: 0.9rem; margin: 10px 0;">Site web personnel présentant mon parcours.</p>
-                        <div class="badge-container">
-                            <span class="badge">HTML</span>
-                            <span class="badge">CSS</span>
-                            <span class="badge">JS</span>
-                            <span class="badge">Git</span>
-                            <span class="badge">Azure</span>
-                            <span class="badge">Azure DevOps</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="project-slide" id="stageProjectSlide">
-                    <div class="project-card" id="stageProjectCard" style="cursor: pointer;">
-                        <div class="project-img" style="background-image: url('img/stage-seances.png'); background-color: #2d3e50;"></div>
-                        <h3>Gestion Interne - Très Union</h3>
-                        <p style="font-size: 0.9rem; margin: 10px 0;">Site de gestion interne développé en stage pour un organisme éducatif : fiches élèves, exports Word de feuilles de présence, gestion des sessions/intervenants et migration de données depuis Access.</p>
-                        <div class="badge-container">
-                            <span class="badge">PHP</span>
-                            <span class="badge">MySQL</span>
-                            <span class="badge">Docker</span>
-                        </div>
-                    </div>
+                    </article>
                 </div>
-
-                <div class="project-slide" id="ferrariProjectSlide">
-                    <div class="project-card" id="ferrariProjectCard" style="cursor: pointer;">
-                        <div class="project-img" style="background-image: url('img/ferrari-1.png'); background-color: #1a0000;"></div>
-                        <h3>Ferrari — Executive Performance</h3>
-                        <p style="font-size: 0.9rem; margin: 10px 0;">Dashboard Power BI portfolio analysant les performances financières, commerciales et géographiques de Ferrari (2023-2025).</p>
-                        <div class="badge-container">
-                            <span class="badge">Power BI</span>
-                            <span class="badge">DAX</span>
-                            <span class="badge">Excel</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-slide" id="f1ProjectSlide">
-                    <div class="project-card" id="f1ProjectCard" style="cursor: pointer;">
-                        <div class="project-img" style="background-image: url('img/f1-pipeline.png'); background-color: #15151e;"></div>
-                        <h3>F1 Data Pipeline</h3>
-                        <p style="font-size: 0.9rem; margin: 10px 0;">Pipeline automatisé qui collecte et structure les données de chaque Grand Prix de F1, puis les expose dans un dashboard en ligne mis à jour chaque semaine.</p>
-                        <div class="badge-container">
-                            <span class="badge">Python</span>
-                            <span class="badge">SQL</span>
-                            <span class="badge">DuckDB</span>
-                            <span class="badge">Streamlit</span>
-                            <span class="badge">GitHub Actions</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="stage cert-stage" id="certStage" aria-hidden="true"></div>
             </div>
+        </section>
 
-            <button class="carousel-arrow carousel-arrow-right" id="nextProject" aria-label="Projet suivant">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
+        <!-- CONTACT -->
+        <section id="contact" class="contact">
+            <div class="contact-layout">
+            <div class="contact-copy">
+            <h2>Travaillons<br>ensemble.</h2>
+            <div class="contact-grid">
+                <a class="contact-big" href="mailto:yass.mahjoubi@hotmail.com">yass.mahjoubi@hotmail.com</a>
+                <p>07 66 68 28 96</p>
+                <p>Dijon, France</p>
+                <p class="socials">
+                    <a class="link" href="https://github.com/yassinehq" target="_blank" rel="noopener">GitHub</a>
+                    <a class="link" href="https://fr.linkedin.com/in/mahjoubi-yassine" target="_blank" rel="noopener">LinkedIn</a>
+                </p>
+            </div>
+            </div>
+            <div class="stage contact-stage" id="contactStage" aria-label="Le signe @ en particules : passez la souris pour le disperser"></div>
+            </div>
+            <p class="copy">© 2026 Yassine Mahjoubi</p>
+        </section>
+    </main>
 
-        <div class="carousel-dots" id="carouselDots"></div>
-    </section>
+    <!-- Aperçu flottant au survol d'un projet -->
+    <div class="preview" id="preview" aria-hidden="true"><img alt=""></div>
 
-    <div class="project-modal-overlay" id="ferrariModalOverlay">
-        <div class="project-modal">
-            <button class="project-modal-close" id="closeFerrariModal" aria-label="Fermer">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="project-modal-header">
-                <i class="fas fa-chart-line" style="font-size: 2.5rem;"></i>
-                <h2>Ferrari — Executive Performance</h2>
-            </div>
-            <p class="project-modal-note">
-                <i class="fas fa-info-circle"></i> Dashboard réalisé dans le cadre de mon portfolio Data Analyst, à partir de données financières et commerciales de Ferrari.
-            </p>
-            <div class="project-modal-gallery">
-                <img src="img/ferrari-1.png" alt="Vue d'ensemble - Executive Performance" onclick="window.open(this.src, '_blank')">
-                <img src="img/ferrari-2.png" alt="Ventes & géographie" onclick="window.open(this.src, '_blank')">
-                <img src="img/ferrari-3.png" alt="Performance financière" onclick="window.open(this.src, '_blank')">
-            </div>
-            <p>
-                Analyse de la performance financière et commerciale de Ferrari sur 2023-2025 :
-            </p>
-            <ul class="project-modal-list">
-                <li>Vue d'ensemble exécutive : chiffre d'affaires, bénéfice net, FCF, EBITDA, EBIT, expéditions</li>
-                <li>Analyse des ventes par zone géographique (EMEA, Amériques, Chine/HK/Taïwan, reste APAC)</li>
-                <li>Suivi de la performance financière : croissance du CA, marges opérationnelles, génération de cash</li>
-                <li>Mesures DAX pour le calcul des marges, variations et valeur par véhicule</li>
-            </ul>
-            <p class="project-modal-source">
-                <i class="fas fa-database"></i> <strong>Source des données :</strong>
-                Rapports annuels et documents financiers publiés par Ferrari N.V. —
-                <a href="https://www.ferrari.com/en-EN/corporate/financial-documents" target="_blank" rel="noopener">ferrari.com — Financial Documents</a>
-            </p>
-            <div class="badge-container">
-                <span class="badge">Power BI</span>
-                <span class="badge">DAX</span>
-                <span class="badge">Excel</span>
-            </div>
-        </div>
+    <!-- Fiche projet -->
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+        <div class="sheet-backdrop" data-close></div>
+        <article class="sheet-panel" tabindex="-1">
+            <button class="sheet-close" data-close aria-label="Fermer la fiche">Fermer</button>
+            <p class="sheet-kind" id="sheetKind"></p>
+            <h2 id="sheetTitle"></h2>
+            <p class="sheet-intro" id="sheetIntro"></p>
+            <div class="sheet-gallery" id="sheetGallery"></div>
+            <ul class="sheet-points" id="sheetPoints"></ul>
+            <p class="sheet-note" id="sheetNote"></p>
+            <p class="sheet-tags" id="sheetTags"></p>
+            <p class="sheet-links" id="sheetLinks"></p>
+        </article>
     </div>
 
-    <div class="project-modal-overlay" id="f1ModalOverlay">
-        <div class="project-modal">
-            <button class="project-modal-close" id="closeF1Modal" aria-label="Fermer">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="project-modal-header">
-                <i class="fas fa-flag-checkered" style="font-size: 2.5rem;"></i>
-                <h2>F1 Data Pipeline</h2>
-            </div>
-            <p class="project-modal-note">
-                <i class="fas fa-info-circle"></i> Projet data engineering de bout en bout : de la collecte automatique des données jusqu'au dashboard en ligne.
-            </p>
-            <div class="project-modal-gallery">
-                <img src="img/f1-pipeline.png" alt="Dashboard F1 Data Pipeline" onclick="window.open(this.src, '_blank')">
-            </div>
-            <p>
-                Chaque lundi, le pipeline récupère et traite les données du dernier Grand Prix :
-            </p>
-            <ul class="project-modal-list">
-                <li>Collecte via l'API FastF1 : résultats, chaque tour de chaque pilote, pneus et arrêts aux stands</li>
-                <li>Nettoyage : détection des tours faussés (stands, Safety Car, VSC) et reconstruction des relais de pneus</li>
-                <li>Stockage DuckDB avec chargement incrémental et idempotent (jamais de doublon)</li>
-                <li>Contrôles qualité testés avec pytest et automatisation complète via GitHub Actions</li>
-                <li>Dashboard Streamlit : classement cumulé, rythme de course, stratégies pneus, duel entre pilotes</li>
-            </ul>
-            <p class="project-modal-source">
-                <a href="https://yaseen-f1-data.streamlit.app" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Voir la démo live</a>
-                &nbsp;·&nbsp;
-                <a href="https://github.com/yassinehq/f1-data-pipeline" target="_blank" rel="noopener"><i class="fab fa-github"></i> Voir le code</a>
-            </p>
-            <div class="badge-container">
-                <span class="badge">Python</span>
-                <span class="badge">SQL</span>
-                <span class="badge">DuckDB</span>
-                <span class="badge">Streamlit</span>
-                <span class="badge">GitHub Actions</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="project-modal-overlay" id="stageModalOverlay">
-        <div class="project-modal">
-            <button class="project-modal-close" id="closeStageModal" aria-label="Fermer">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="project-modal-header">
-                <i class="fas fa-school" style="font-size: 2.5rem;"></i>
-                <h2>Gestion Interne - Très Union</h2>
-            </div>
-            <p class="project-modal-note">
-                <i class="fas fa-lock"></i> Ce site a été développé dans un cadre professionnel (stage) et n'est pas accessible publiquement. Les données personnelles visibles sur les captures ont été floutées.
-            </p>
-            <div class="project-modal-gallery">
-                <img src="img/stage-seances.png" alt="Gestion des séances" onclick="window.open(this.src, '_blank')">
-                <img src="img/stage-eleves.png" alt="Liste des élèves (floutée)" onclick="window.open(this.src, '_blank')">
-                <img src="img/stage-intervenants.png" alt="Gestion des intervenants" onclick="window.open(this.src, '_blank')">
-            </div>
-            <p>
-                Application interne développée pour un organisme éducatif afin de digitaliser sa gestion administrative :
-            </p>
-            <ul class="project-modal-list">
-                <li>Fiches élèves consultables et modifiables via des modals dynamiques</li>
-                <li>Génération automatique de feuilles de présence exportées en Word, avec regroupement dynamique par classe</li>
-                <li>Gestion des sessions de formation et des intervenants</li>
-                <li>Export des déclarations d'heures des intervenants</li>
-                <li>Migration des données existantes depuis des bases Access vers MySQL</li>
-            </ul>
-            <div class="badge-container">
-                <span class="badge">PHP</span>
-                <span class="badge">MySQL</span>
-                <span class="badge">Docker</span>
-            </div>
-        </div>
-    </div>
-
-    <footer id="contact">
-        <div class="contact-box">
-            <h2 style="margin-bottom: 15px;">Contact</h2>
-            <p>📧 yass.mahjoubi@hotmail.com</p>
-            <p>📱 07 66 68 28 96</p>
-            <p>📍 Dijon, France</p>
-        </div>
-
-        <div class="social-icons">
-            <a href="https://github.com/yassinehq"><i class="fab fa-github"></i></a>
-            <a href="https://fr.linkedin.com/in/mahjoubi-yassine"><i class="fab fa-linkedin"></i></a>
-        </div>
-        
-        <p style="margin-top: 20px; font-size: 0.8rem;">&copy; 2025 Yassine Mahjoubi</p>
-    </footer>
-
-    <div class="world-images" id="worldImages"></div>
-
-    <script src="script.js"></script>
-
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
