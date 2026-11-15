@@ -199,3 +199,26 @@ addEventListener('keydown', e => {
         }, 500);
     }, 3200);
 })();
+
+/* ---------------------------------------------------------
+   4. Veille : articles récents, mis à jour par GitHub Actions
+   --------------------------------------------------------- */
+(async function veille() {
+    const fmt = d => new Date(d + 'T00:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+    const fill = (id, items) => {
+        const ul = document.getElementById(id);
+        ul.innerHTML = items.length
+            ? items.map(a => `<li><a href="${a.url}" target="_blank" rel="noopener"><span class="v-title">${a.title}</span><span class="v-meta">${a.source} · ${fmt(a.date)}</span></a></li>`).join('')
+            : '<li class="empty">Articles indisponibles pour le moment.</li>';
+    };
+    try {
+        const res = await fetch('data/veille.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        fill('veilleIa', data.ia || []);
+        fill('veilleData', data.data || []);
+        document.getElementById('veilleMeta').textContent = data.updated ? `Mis à jour le ${fmt(data.updated)}.` : '';
+    } catch (e) {
+        fill('veilleIa', []); fill('veilleData', []);
+    }
+})();

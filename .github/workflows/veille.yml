@@ -1,0 +1,33 @@
+name: Veille technologique
+
+# Chaque lundi à 6 h UTC (et à la demande) : récupère les derniers articles
+# des flux RSS et commite data/veille.json si quelque chose a changé.
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Récupérer les articles
+        run: python scripts/veille.py
+      - name: Commiter si changement
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/veille.json
+          if git diff --cached --quiet; then
+            echo "Pas de nouvel article."
+          else
+            git commit -m "Veille : articles du $(date -u +%Y-%m-%d)"
+            git push
+          fi
