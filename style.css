@@ -166,8 +166,6 @@ main { position: relative; z-index: 1; }
 /* ---------- Compétences ---------- */
 .skills-section .section-head { margin-bottom: 1.6rem; }
 .stage { position: relative; min-height: 0; border-radius: 18px; touch-action: pan-y; }
-.webgl.labels-on .skills-section .stage { height: min(70vh, 640px); }
-.skills-section .stage:empty, .skills-section .stage:not(:has(.lbl)) { display: none; }
 .skill-chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.2rem 2rem; margin: 1.2rem 0 1.4rem; }
 .chip-group h4 { font-weight: 500; font-size: .85rem; color: var(--soft); margin-bottom: .6rem; display: flex; align-items: center; gap: .45rem; }
 .chip-group h4::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--text)); }
@@ -264,8 +262,7 @@ main { position: relative; z-index: 1; }
 /* ---------- Sections ---------- */
 section:not(.hero) { padding: clamp(5rem, 13vh, 9rem) var(--pad); }
 /* un voile sombre sous les sections de texte : contraste garanti devant le nuage */
-.webgl section:not(.hero):not(.skills-section) { background: rgba(18, 21, 58, .72); }
-.webgl .skills-section { background: linear-gradient(rgba(18, 21, 58, 0), rgba(18, 21, 58, .72) 30%, rgba(18, 21, 58, .72)); }
+.webgl .about, .webgl .path { background: rgba(18, 21, 58, .72); }
 .section-head {
     display: grid; grid-template-columns: 1fr minmax(16rem, 24rem); gap: 2rem;
     align-items: end; margin-bottom: clamp(2.5rem, 6vh, 4rem);
@@ -406,7 +403,7 @@ summary { cursor: pointer; width: fit-content; }
     .hero-text { padding-right: 0; }
     .hero-text::before { inset: -1rem -1.5rem; }
     .hero-space { align-items: stretch; }
-    .hero-stage { min-height: 26rem; }   /* le réseau se place ici, sous le texte */
+    .hero-stage { min-height: 28rem; }   /* le réseau se place ici, sous le texte */
     .hero-info .info-hint { text-align: left; }
     .webgl .skills-section .stage { height: 32rem; }
     .info { height: auto; min-height: 7.4rem; grid-template-columns: 1fr; }
@@ -440,3 +437,62 @@ summary { cursor: pointer; width: fit-content; }
     *, *::before, *::after { transition-duration: .01ms !important; }
 }
 
+
+/* ---------- Zones réservées aux formes (le nuage se cale dessus) ---------- */
+.skills-stage { height: min(68vh, 620px); }
+.no-webgl .skills-stage, .no-webgl .chapter-stage, .no-webgl .cert-stage, .no-webgl .contact-stage { display: none; }
+.webgl .skill-chips { display: none; }
+.skills-section .info { margin-top: 1rem; }
+
+/* ---------- Chapitres projets ---------- */
+.chapters { display: grid; gap: clamp(2rem, 6vh, 5rem); margin-bottom: clamp(4rem, 10vh, 7rem); }
+.chapter {
+    min-height: 88vh;
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center; gap: clamp(1.5rem, 4vw, 4rem);
+}
+.chapter:nth-child(even) .chapter-text { order: 2; }
+.chapter-stage { min-height: min(62vh, 560px); }
+.veil { background: rgba(18, 21, 58, .78); border: 1px solid var(--line); border-radius: 18px; padding: clamp(1.4rem, 3vw, 2.4rem); }
+.chapter-text .c-kind { color: var(--soft); font-size: .9rem; margin-bottom: .6rem; }
+.chapter-text .c-num { font-family: var(--serif); font-style: italic; color: var(--data); margin-right: .5rem; }
+.chapter-text h3 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.05; letter-spacing: -.02em; margin-bottom: .9rem; }
+.chapter-text p { color: var(--soft); max-width: 46ch; margin-bottom: 1rem; }
+.chapter-text .c-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.4rem; }
+.chapter-text .c-tags span { font-size: .78rem; border: 1px solid var(--line); border-radius: 999px; padding: .2rem .65rem; color: var(--soft); }
+.chapter-text .c-soon { font-size: .85rem; color: var(--soft); font-style: italic; }
+.recap-title { margin-bottom: 1.2rem; }
+.webgl .projects .section-head, .webgl .project-list, .webgl .filter, .webgl .recap-title { position: relative; }
+.webgl .project-list { background: rgba(18, 21, 58, .72); border-radius: 18px; padding: 0 1.2rem; border-top: 0; }
+.webgl .project-row:last-child { border-bottom: 0; }
+.webgl .projects .section-head > * { background: rgba(18, 21, 58, .6); border-radius: 14px; padding: .4rem .8rem; }
+
+/* ---------- Certification ---------- */
+.cert-layout { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+.cert-copy .section-head { margin-bottom: 1.6rem; }
+.cert-section .cert { background: rgba(18, 21, 58, .8); }
+.cert-stage { min-height: min(64vh, 560px); }
+
+/* ---------- Contact ---------- */
+.contact-layout { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+.contact-copy { position: relative; }
+.contact-copy::before {
+    content: ""; position: absolute; inset: -2rem -3rem -2rem -2rem; z-index: -1; border-radius: 32px;
+    background: radial-gradient(80% 90% at 40% 50%, rgba(18, 21, 58, .9), rgba(18, 21, 58, .5) 70%, rgba(18, 21, 58, 0));
+}
+.contact-stage { min-height: min(60vh, 520px); pointer-events: auto; cursor: crosshair; border-radius: 50%; }
+
+@media (max-width: 980px) {
+    .chapter { grid-template-columns: 1fr; min-height: 0; }
+    .chapter:nth-child(even) .chapter-text { order: 0; }
+    .chapter-stage { min-height: 24rem; }
+    .cert-layout, .contact-layout { grid-template-columns: 1fr; }
+    .cert-stage { min-height: 22rem; }
+    .contact-stage { min-height: 20rem; }
+    .skills-stage { height: 34rem; }
+}
+/* la tête de la section Compétences reste lisible au-dessus du réseau */
+.skills-section .section-head { position: relative; z-index: 3; }
+.webgl .skills-section .section-head > * { background: rgba(18, 21, 58, .7); border-radius: 14px; padding: .3rem .8rem; width: fit-content; }
+.skills-section .legend { position: relative; z-index: 3; width: fit-content; background: rgba(18, 21, 58, .7); border-radius: 999px; padding: .3rem .8rem; }
+.skills-section .skills-stage { margin-top: 1rem; }

@@ -115,6 +115,7 @@ export const pointVert = /* glsl */`
 
 export const pointFrag = /* glsl */`
     precision highp float;
+    uniform float uFade;
     varying vec3 vColor;
     varying float vAlpha, vGlow;
     void main() {
@@ -123,7 +124,7 @@ export const pointFrag = /* glsl */`
         // disque doux + halo discret : un faux glow, sans post-traitement
         float core = smoothstep(0.34, 0.1, d);
         float halo = smoothstep(0.5, 0.1, d) * (0.26 + vGlow * 0.5);
-        float a = max(core, halo) * (0.35 + 0.65 * vAlpha);
+        float a = max(core, halo) * (0.35 + 0.65 * vAlpha) * uFade;
         gl_FragColor = vec4(vColor + vGlow * 0.35, a);
     }
 `;

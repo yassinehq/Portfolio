@@ -65,7 +65,7 @@ export function createScene(canvas) {
     const pointU = {
         tPos: simU.tPos, tVel: simU.tVel, tSizeA: simU.tTargetA, tSizeB: simU.tTargetB, tColA: { value: null }, tColB: { value: null }, uMix: simU.uMix, uTime: simU.uTime,
         uPR: { value: 1 }, uSizeK: { value: 120 }, uFogNear: { value: 20 }, uFogFar: { value: 60 }, uPulse: { value: reduceMotion ? 0 : 1 },
-        tAct: { value: null }, uDim: { value: 0 }, uActColor: { value: new THREE.Color(0xfff3dc) }
+        tAct: { value: null }, uDim: { value: 0 }, uActColor: { value: new THREE.Color(0xfff3dc) }, uFade: { value: 1 }
     };
     const pointMat = new THREE.ShaderMaterial({
         uniforms: pointU, vertexShader: pointVert, fragmentShader: pointFrag,

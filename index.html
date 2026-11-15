@@ -25,13 +25,16 @@
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+        "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js",
+        "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.mjs"
     } }
     </script>
 </head>
 <body>
     <canvas id="gl" aria-hidden="true"></canvas>
-    <div class="labels" id="heroLabels" aria-label="Réseau de compétences"></div>
+    <div class="labels" id="netLabels" aria-label="Réseau de compétences"></div>
     <button type="button" id="skipIntro" class="skip-intro">Passer l'intro</button>
     <a class="skip" href="#projets">Aller aux projets</a>
 
@@ -86,9 +89,7 @@
                 <li data-g="dev">Développement</li>
                 <li data-g="tool">Outils</li>
             </ul>
-            <div class="stage" id="stage">
-                <div class="labels" id="labels"></div>
-            </div>
+            <div class="stage skills-stage" id="skillsStage" aria-hidden="true"></div>
             <div class="skill-chips" id="skillChips"></div>
             <div class="info" id="info" aria-live="polite">
                 <p class="info-hint">Survolez ou touchez une compétence pour voir son poids vers data scientist, data engineer et data analyst, et les projets où je l'utilise.</p>
@@ -99,8 +100,10 @@
         <section id="projets" class="projects">
             <div class="section-head">
                 <h2>Projets</h2>
-                <p>Du dashboard Power BI à l'application métier. Cliquez sur un projet pour l'ouvrir.</p>
+                <p>Du dashboard Power BI au machine learning. Chaque projet prend forme en défilant ; cliquez pour ouvrir sa fiche.</p>
             </div>
+            <div class="chapters" id="chapters"></div>
+            <h3 class="recap-title">Tous les projets</h3>
             <div class="filter" id="filter" hidden>
                 <p>Projets qui utilisent <strong id="filterName"></strong></p>
                 <button type="button" class="pill small" id="filterReset">Tout afficher</button>
@@ -165,22 +168,6 @@
                     <p class="muted">Métiers visés : data scientist, data engineer. Data analyst aussi possible.</p>
                 </div>
 
-                <div class="certs" id="certifications">
-                    <h3>Certifications</h3>
-                    <article class="cert">
-                        <a class="cert-thumb" href="docs/certificat-inside-lvmh.pdf" target="_blank" rel="noopener" aria-label="Ouvrir le certificat INSIDE LVMH (PDF)">
-                            <img src="img/certificat-inside-lvmh.webp" alt="Certificat INSIDE LVMH au nom de Yassine Mahjoubi" loading="lazy" width="976" height="675">
-                        </a>
-                        <div class="cert-text">
-                            <strong>INSIDE LVMH Certificate</strong>
-                            <span class="when">LVMH · obtenu le 13/11/2026</span>
-                            <p>Spécialisations : Creation &amp; Branding, Operations &amp; Supply Chain.</p>
-                            <p>L'écosystème LVMH, les fondamentaux de l'industrie du luxe et ses enjeux.</p>
-                            <a class="link" href="docs/certificat-inside-lvmh.pdf" target="_blank" rel="noopener">Voir le certificat</a>
-                        </div>
-                    </article>
-                </div>
-
                 <div class="watch">
                     <h3>Veille technologique</h3>
                     <p>Je suis l'évolution du développement web, des langages et des outils data via GitHub, MDN Web Docs et YouTube.</p>
@@ -195,8 +182,34 @@
             </div>
         </section>
 
+        <!-- CERTIFICATION -->
+        <section id="certifications" class="cert-section">
+            <div class="cert-layout">
+                <div class="cert-copy">
+                    <div class="section-head">
+                        <h2>Certification</h2>
+                    </div>
+                    <article class="cert">
+                        <a class="cert-thumb" href="docs/certificat-inside-lvmh.pdf" target="_blank" rel="noopener" aria-label="Ouvrir le certificat INSIDE LVMH (PDF)">
+                            <img src="img/certificat-inside-lvmh.webp" alt="Certificat INSIDE LVMH au nom de Yassine Mahjoubi" loading="lazy" width="976" height="675">
+                        </a>
+                        <div class="cert-text">
+                            <strong>INSIDE LVMH Certificate</strong>
+                            <span class="when">LVMH · obtenu le 13/11/2026</span>
+                            <p>Spécialisations : Creation &amp; Branding, Operations &amp; Supply Chain.</p>
+                            <p>L'écosystème LVMH, les fondamentaux de l'industrie du luxe et ses enjeux.</p>
+                            <a class="link" href="docs/certificat-inside-lvmh.pdf" target="_blank" rel="noopener">Voir le certificat</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="stage cert-stage" id="certStage" aria-hidden="true"></div>
+            </div>
+        </section>
+
         <!-- CONTACT -->
         <section id="contact" class="contact">
+            <div class="contact-layout">
+            <div class="contact-copy">
             <h2>Travaillons<br>ensemble.</h2>
             <div class="contact-grid">
                 <a class="contact-big" href="mailto:yass.mahjoubi@hotmail.com">yass.mahjoubi@hotmail.com</a>
@@ -206,6 +219,9 @@
                     <a class="link" href="https://github.com/yassinehq" target="_blank" rel="noopener">GitHub</a>
                     <a class="link" href="https://fr.linkedin.com/in/mahjoubi-yassine" target="_blank" rel="noopener">LinkedIn</a>
                 </p>
+            </div>
+            </div>
+            <div class="stage contact-stage" id="contactStage" aria-label="Le signe @ en particules : passez la souris pour le disperser"></div>
             </div>
             <p class="copy">© 2026 Yassine Mahjoubi</p>
         </section>
