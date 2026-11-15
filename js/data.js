@@ -89,9 +89,11 @@ export const PROJECTS = [
             "Régression : California Housing (régression linéaire, arbres, validation croisée)",
             "Préparation des données avec pandas, évaluation avec les métriques de scikit-learn"
         ],
-        soon: "Dépôt GitHub en cours de publication.",
         tags: ['Python', 'scikit-learn'],
-        links: []
+        links: [
+            ['Iris sur GitHub', 'https://github.com/yassinehq/Iris-ml'],
+            ['Breast Cancer sur GitHub', 'https://github.com/yassinehq/Breast-cancer-ml']
+        ]
     }
 ];
 
