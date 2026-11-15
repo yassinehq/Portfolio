@@ -21,11 +21,12 @@ export function initScroll(scene, stops, { labels, lines, onIntroDone } = {}) {
     const { reduceMotion } = scene;
     const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-    /* ---- Défilement lissé ---- */
+    /* ---- Défilement : natif par défaut (réponse immédiate à la molette).
+       Lenis reste disponible : ?smooth dans l'URL ou SMOOTH_SCROLL = true. ---- */
+    const SMOOTH_SCROLL = false;
     let lenis = null;
-    if (!reduceMotion) {
-        // lerp élevé : la page réagit tout de suite à la molette, le lissage reste léger
-        lenis = new Lenis({ lerp: 0.22, smoothWheel: true, wheelMultiplier: 1.1 });
+    if (!reduceMotion && (SMOOTH_SCROLL || location.search.includes('smooth'))) {
+        lenis = new Lenis({ lerp: 0.3, smoothWheel: true });
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add(t => lenis.raf(t * 1000));
         gsap.ticker.lagSmoothing(0);
@@ -64,7 +65,7 @@ export function initScroll(scene, stops, { labels, lines, onIntroDone } = {}) {
             trigger: s.trigger ? document.querySelector(s.trigger) : s.el,
             start: s.start ?? 'top 85%',
             end: s.end ?? 'top 30%',
-            scrub: reduceMotion ? false : 0.25,
+            scrub: reduceMotion ? false : 0.15,
             onUpdate: self => setState(k - 1, self.progress),
             onToggle: self => { if (self.isActive) setState(k - 1, self.progress); }
         });
