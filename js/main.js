@@ -24,11 +24,9 @@ if (!scene) {
 
     /* ---- Formes ---- */
     const heroLayout = networkLayout({ spread: 1.05, curl: 0.8, xGap: 5.2 });
-    const skillsLayout = networkLayout({ spread: 1.0, curl: 0.15, xGap: 6.2, base: heroLayout });
     scene.buildSim(narrow || coarse ? 128 : 192);
     scene.registerShape('scatter', n => scatter(n));
     scene.registerShape('hero', n => network(n, heroLayout));
-    scene.registerShape('skills', n => network(n, skillsLayout));
     scene.registerShape('bars', bars);
     scene.registerShape('database', database);
     scene.registerShape('screen', screen);
@@ -47,9 +45,9 @@ if (!scene) {
     scene.root.add(lines);
 
     /* ---- Étiquettes HTML du réseau (hero et compétences) ---- */
-    const labels = createLabels(scene, [heroLayout, skillsLayout], {
+    const labels = createLabels(scene, [heroLayout, heroLayout], {
         layer: document.getElementById('netLabels'),
-        infos: [document.getElementById('heroInfo'), document.getElementById('info')],
+        infos: [document.getElementById('heroInfo')],
         lines
     });
     html.classList.add('labels-on');
@@ -59,7 +57,6 @@ if (!scene) {
     let scroll = null;
     const stops = [
         { el: '#heroStage', shape: 'hero', rot: [narrow ? 0.03 : 0.1, narrow ? -0.2 : -0.3], net: true, mouse: true, stretch: true, scale: 1.0, cam: [0, 0, 30] },
-        { el: '#skillsStage', shape: 'skills', rot: [0, 0], net: true, mouse: true, stretch: true, scale: 0.9, cam: [0, 0, 31], start: 'top 90%', end: 'top 20%' },
         { el: '#stage-ferrari', shape: 'bars', rot: [0.38, -0.65], trigger: '#ch-ferrari', cam: [1.2, 0.4, 29] },
         { el: '#stage-stage', shape: 'database', rot: [0.3, 0.5], trigger: '#ch-stage', cam: [-1, 0.3, 29.5] },
         { el: '#stage-portfolio', shape: 'screen', rot: [0.06, -0.3], trigger: '#ch-portfolio', cam: [0.8, 0, 30] },

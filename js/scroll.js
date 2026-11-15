@@ -134,7 +134,7 @@ export function initScroll(scene, stops, { labels, lines, onIntroDone } = {}) {
         scene.pointU.uFade.value = lerp(a.fade ?? 1, b.fade ?? 1, p);
         const net = lerp(a.net ? 1 : 0, b.net ? 1 : 0, p);
         if (lines) lines.material.opacity = net * (introT >= 1 ? 1 : introT);
-        labels?.setMix(i === 0 ? p : i === 1 ? 1 : 0);
+        labels?.setMix(0);
         labels?.setEnabled(net > 0.4);
         labels?.setFade(Math.max(0, (net - 0.4) / 0.6));
 

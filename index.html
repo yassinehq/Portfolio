@@ -81,15 +81,8 @@
         <section id="competences" class="skills-section">
             <div class="section-head">
                 <h2>Compétences</h2>
-                <p>Chaque compétence pèse plus ou moins vers les métiers que je vise. Survolez ou touchez-en une.</p>
+                <p>Par famille. Survolez ou touchez une compétence : son poids vers chaque métier et les projets où je l'utilise.</p>
             </div>
-            <ul class="legend" aria-label="Familles de compétences">
-                <li data-g="data">Data</li>
-                <li data-g="ml">Machine learning</li>
-                <li data-g="dev">Développement</li>
-                <li data-g="tool">Outils</li>
-            </ul>
-            <div class="stage skills-stage" id="skillsStage" aria-hidden="true"></div>
             <div class="skill-chips" id="skillChips"></div>
             <div class="info" id="info" aria-live="polite">
                 <p class="info-hint">Survolez ou touchez une compétence pour voir son poids vers data scientist, data engineer et data analyst, et les projets où je l'utilise.</p>
@@ -170,7 +163,18 @@
 
                 <div class="watch">
                     <h3>Veille technologique</h3>
-                    <p>Je suis l'évolution du développement web, des langages et des outils data via GitHub, MDN Web Docs et YouTube.</p>
+                    <p>Je suis l'évolution de l'IA, des outils data et du développement web. Les articles ci-dessous sont mis à jour chaque semaine automatiquement (GitHub Actions + flux RSS).</p>
+                    <div class="veille" id="veille">
+                        <div class="veille-col">
+                            <h4>Nouveautés de l'IA</h4>
+                            <ul id="veilleIa"></ul>
+                        </div>
+                        <div class="veille-col">
+                            <h4>Data &amp; machine learning</h4>
+                            <ul id="veilleData"></ul>
+                        </div>
+                        <p class="veille-meta muted" id="veilleMeta"></p>
+                    </div>
                     <details>
                         <summary>Afficher ma collection Wakelet</summary>
                         <div class="wakelet">

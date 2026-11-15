@@ -262,7 +262,7 @@ main { position: relative; z-index: 1; }
 /* ---------- Sections ---------- */
 section:not(.hero) { padding: clamp(5rem, 13vh, 9rem) var(--pad); }
 /* un voile sombre sous les sections de texte : contraste garanti devant le nuage */
-.webgl .about, .webgl .path { background: rgba(18, 21, 58, .72); }
+.webgl .about, .webgl .path, .webgl .skills-section { background: rgba(18, 21, 58, .72); }
 .section-head {
     display: grid; grid-template-columns: 1fr minmax(16rem, 24rem); gap: 2rem;
     align-items: end; margin-bottom: clamp(2.5rem, 6vh, 4rem);
@@ -439,9 +439,7 @@ summary { cursor: pointer; width: fit-content; }
 
 
 /* ---------- Zones réservées aux formes (le nuage se cale dessus) ---------- */
-.skills-stage { height: min(68vh, 620px); }
 .no-webgl .skills-stage, .no-webgl .chapter-stage, .no-webgl .cert-stage, .no-webgl .contact-stage { display: none; }
-.webgl .skill-chips { display: none; }
 .skills-section .info { margin-top: 1rem; }
 
 /* ---------- Chapitres projets ---------- */
@@ -489,10 +487,16 @@ summary { cursor: pointer; width: fit-content; }
     .cert-layout, .contact-layout { grid-template-columns: 1fr; }
     .cert-stage { min-height: 22rem; }
     .contact-stage { min-height: 20rem; }
-    .skills-stage { height: 34rem; }
 }
-/* la tête de la section Compétences reste lisible au-dessus du réseau */
-.skills-section .section-head { position: relative; z-index: 3; }
-.webgl .skills-section .section-head > * { background: rgba(18, 21, 58, .7); border-radius: 14px; padding: .3rem .8rem; width: fit-content; }
-.skills-section .legend { position: relative; z-index: 3; width: fit-content; background: rgba(18, 21, 58, .7); border-radius: 999px; padding: .3rem .8rem; }
-.skills-section .skills-stage { margin-top: 1rem; }
+
+/* ---------- Veille : articles récents (data/veille.json) ---------- */
+.veille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 2rem; margin: .4rem 0 1.4rem; }
+.veille h4 { font-weight: 500; font-size: .95rem; color: var(--text); margin-bottom: .6rem; }
+.veille ul { list-style: none; display: grid; gap: .55rem; }
+.veille li a { display: block; text-decoration: none; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: 10px; background: rgba(25, 29, 74, .6); transition: border-color .25s, background .25s; }
+.veille li a:hover { border-color: var(--data); background: rgba(25, 29, 74, .95); }
+.veille .v-title { display: block; font-size: .92rem; line-height: 1.35; color: var(--text); }
+.veille .v-meta { display: block; font-size: .78rem; color: var(--soft); margin-top: .25rem; }
+.veille-meta { grid-column: 1 / -1; font-size: .8rem; margin: 0; }
+.veille li.empty { color: var(--soft); font-size: .9rem; }
+@media (max-width: 560px) { .veille { grid-template-columns: 1fr; } }
