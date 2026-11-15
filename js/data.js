@@ -75,6 +75,23 @@ export const PROJECTS = [
         ],
         tags: ['HTML', 'CSS', 'JavaScript', 'Git'],
         links: [['Ouvrir la calculatrice', 'https://yassinehq.github.io/calculator/']]
+    },
+    {
+        id: 'ml',
+        title: 'Projets machine learning',
+        kind: 'Data science',
+        desc: "Classification et régression avec scikit-learn : Iris, Breast Cancer, California Housing.",
+        intro: "Mes projets d'apprentissage en machine learning : préparer les données, entraîner des modèles, les évaluer et comprendre ce qu'ils apprennent.",
+        cover: null,
+        gallery: [],
+        points: [
+            "Classification : Iris et Breast Cancer (régression logistique, k plus proches voisins, forêts aléatoires)",
+            "Régression : California Housing (régression linéaire, arbres, validation croisée)",
+            "Préparation des données avec pandas, évaluation avec les métriques de scikit-learn"
+        ],
+        soon: "Dépôt GitHub en cours de publication.",
+        tags: ['Python', 'scikit-learn'],
+        links: []
     }
 ];
 
@@ -89,12 +106,12 @@ export const JOBS = [
 ];
 export const GROUPS = { data: 'Data', ml: 'Machine learning', dev: 'Développement', tool: 'Outils' };
 export const SKILLS = [
-    { id: 'python',  label: 'Python',         g: 'data', w: { ds: 1, de: .9, da: .9 },  p: [], extra: 'mes projets de machine learning' },
+    { id: 'python',  label: 'Python',         g: 'data', w: { ds: 1, de: .9, da: .9 },  p: ['ml'] },
     { id: 'sql',     label: 'SQL',            g: 'data', w: { ds: .7, de: 1, da: 1 },   p: ['stage'] },
     { id: 'powerbi', label: 'Power BI',       g: 'data', w: { ds: .2, de: .2, da: 1 },  p: ['ferrari'] },
     { id: 'dax',     label: 'DAX',            g: 'data', w: { ds: .1, de: .1, da: .9 }, p: ['ferrari'] },
     { id: 'excel',   label: 'Excel',          g: 'data', w: { ds: .3, de: .1, da: .8 }, p: ['ferrari'] },
-    { id: 'sklearn', label: 'scikit-learn',   g: 'ml',   w: { ds: 1, de: .2, da: .5 },  p: [], extra: 'mes projets de machine learning (Iris, Breast Cancer, California Housing)' },
+    { id: 'sklearn', label: 'scikit-learn',   g: 'ml',   w: { ds: 1, de: .2, da: .5 },  p: ['ml'] },
     { id: 'mysql',   label: 'MySQL',          g: 'dev',  w: { ds: .4, de: .8, da: .6 }, p: ['stage'] },
     { id: 'php',     label: 'PHP',            g: 'dev',  w: { ds: .1, de: .4, da: .1 }, p: ['stage'] },
     { id: 'js',      label: 'JavaScript',     g: 'dev',  w: { ds: .1, de: .3, da: .2 }, p: ['calc', 'portfolio'] },

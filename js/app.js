@@ -79,11 +79,32 @@ PROJECTS.forEach(p => {
         </button>`;
     const btn = li.querySelector('button');
     btn.addEventListener('click', () => openSheet(p, btn));
-    if (finePointer) {
+    if (finePointer && p.cover) {
         btn.addEventListener('mouseenter', () => { previewImg.src = p.cover; preview.classList.add('on'); });
         btn.addEventListener('mouseleave', () => preview.classList.remove('on'));
     }
     list.appendChild(li);
+});
+
+/* chapitres pleine hauteur : un par projet, la forme en particules se cale sur .chapter-stage */
+const chapters = document.getElementById('chapters');
+PROJECTS.forEach((p, i) => {
+    const art = document.createElement('article');
+    art.className = 'chapter';
+    art.id = 'ch-' + p.id;
+    art.innerHTML = `
+        <div class="chapter-text veil">
+            <p class="c-kind"><span class="c-num">0${i + 1}</span>${p.kind}</p>
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
+            <div class="c-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>
+            ${p.soon ? `<p class="c-soon">${p.soon}</p>` : ''}
+            <button type="button" class="pill" aria-haspopup="dialog">Ouvrir la fiche</button>
+        </div>
+        <div class="stage chapter-stage" id="stage-${p.id}" aria-hidden="true"></div>`;
+    const btn = art.querySelector('button');
+    btn.addEventListener('click', () => openSheet(p, btn));
+    chapters.appendChild(art);
 });
 
 export function filterProjects(skill) {
@@ -118,7 +139,7 @@ function openSheet(p, opener) {
     document.getElementById('sheetKind').textContent = p.kind;
     document.getElementById('sheetTitle').textContent = p.title;
     document.getElementById('sheetIntro').textContent = p.intro;
-    document.getElementById('sheetNote').textContent = p.note || '';
+    document.getElementById('sheetNote').textContent = p.note || p.soon || '';
     document.getElementById('sheetGallery').innerHTML = p.gallery
         .map(([src, alt]) => `<a href="${src}" target="_blank" rel="noopener"><img src="${src}" alt="${alt}" loading="lazy"></a>`).join('');
     document.getElementById('sheetPoints').innerHTML = p.points.map(t => `<li>${t}</li>`).join('');
