@@ -1,43 +1,43 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-23",
   "ia": [
     {
-      "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
-      "url": "https://openai.com/index/lvmh-media-division-partnership",
-      "source": "OpenAI",
-      "date": "2026-11-16"
-    },
-    {
-      "title": "Build a Robot Pick-and-Place Simulation with SimReady Assets",
-      "url": "https://huggingface.co/blog/nvidia/simready-assets-robot-pick-and-place",
+      "title": "How to build and maintain an agentic evaluation",
+      "url": "https://huggingface.co/blog/agentic-evals",
       "source": "Hugging Face",
-      "date": "2026-11-13"
+      "date": "2026-11-23"
     },
     {
-      "title": "Nvidia privately confirmed it could track chips to fight smuggling, even as industry publicly questioned feasibility",
-      "url": "https://www.technologyreview.com/2026/11/12/1148483/nvidia-chip-tracking/",
+      "title": "Perplexity and Intelligence",
+      "url": "https://openai.com/index/perplexity-and-intelligence",
+      "source": "OpenAI",
+      "date": "2026-11-22"
+    },
+    {
+      "title": "The most misunderstood graph in AI just got a major update",
+      "url": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
       "source": "MIT Technology Review",
-      "date": "2026-11-12"
+      "date": "2026-11-20"
     }
   ],
   "data": [
     {
-      "title": "How to Avoid AI Replacement as an Analytics Professional in 2027",
-      "url": "https://towardsdatascience.com/how-to-avoid-ai-replacement-as-an-analytics-professional-in-2027/",
-      "source": "Towards Data Science",
-      "date": "2026-11-16"
-    },
-    {
-      "title": "Agentic System Design: A Self-Study Roadmap",
-      "url": "https://www.kdnuggets.com/agentic-system-design-a-self-study-roadmap",
+      "title": "How to Use AI Tools to Learn Data Science Faster in 2026",
+      "url": "https://www.kdnuggets.com/how-to-use-ai-tools-to-learn-data-science-faster-in-2026",
       "source": "KDnuggets",
-      "date": "2026-11-16"
+      "date": "2026-11-23"
     },
     {
-      "title": "Serving Scikit-LLM Pipelines as REST APIs with FastAPI",
-      "url": "https://machinelearningmastery.com/serving-scikit-llm-pipelines-as-rest-apis-with-fastapi/",
+      "title": "AI Math Proofs Aren't Knowledge Until Someone Explains Them",
+      "url": "https://towardsdatascience.com/ai-math-proofs-arent-knowledge-until-someone-explains-them/",
+      "source": "Towards Data Science",
+      "date": "2026-11-23"
+    },
+    {
+      "title": "How to Build Tool-Calling Local AI Agents in Python",
+      "url": "https://machinelearningmastery.com/how-to-build-tool-calling-local-ai-agents-in-python/",
       "source": "Machine Learning Mastery",
-      "date": "2026-11-16"
+      "date": "2026-11-23"
     }
   ]
 }
